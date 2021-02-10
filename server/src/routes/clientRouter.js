@@ -5,7 +5,8 @@ const router = new express.Router();
 
 const clientRoutes = [
   "/", 
-  "/user-profile"
+  "/user-profile",
+  "/new-event"
 ];
 router.get(clientRoutes, (req, res) => {
   res.sendFile(getClientIndexPath());

@@ -12,7 +12,6 @@ const authHandler = async (accessToken, refreshToken, profile, done) => {
         user = await User.query()
           .insert({ githubId: id, username, accessToken, profileUrl, avatarUrl: photos[0].value })
           .returning('*')
-        debugger
         return done(null, user)
       } else {
         return done(null, user)

@@ -2,7 +2,7 @@ import express from "express"
 import objection from "objection"
 const { ValidationError } = objection
 
-import { Event, Year, Month, EventType } from '../../../models/index.js'
+import { Event, EventType } from '../../../models/index.js'
 import cleanUserInput from "../../../services/cleanUserInput.js"
 
 const eventsRouter = new express.Router()
@@ -10,10 +10,7 @@ const eventsRouter = new express.Router()
 eventsRouter.get("/", async (req, res) => {
   try {
     const events = await Event.query()
-    const years = await Year.query()
-    const months = await Month.query()
-    const eventTypes = await EventType.query()
-    res.status(200).json({ events: events, months: months, years: years, eventTypes: eventTypes })
+    res.status(200).json({ events: events })
   } catch (error) {
     res.status(500).json({ error: error })
   }

@@ -35,7 +35,7 @@ const NewEventForm = (props) => {
 
   const fetchCalendarInfo = async () => {
     try {
-      const response = await fetch(`/api/v1/events`)
+      const response = await fetch(`/api/v1/basics`)
       if (!response.ok) {
         throw new Error(`${response.status} (${response.statusText})`)
       }

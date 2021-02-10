@@ -1,13 +1,11 @@
 import React from "react";
 
-const Profile = () => {
+const Profile = ({ user }) => {
   return (
-    isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.nickname} />
-        <h2>{user.nickname}</h2>
-      </div>
-    )
+    <div>
+      <img src={user.avatarUrl} alt={user.username} />
+      <h2>{user.username}</h2>
+    </div>
   );
 };
 

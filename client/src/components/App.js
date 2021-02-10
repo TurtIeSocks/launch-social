@@ -4,11 +4,10 @@ import { hot } from "react-hot-loader/root";
 
 import getCurrentUser from "../services/getCurrentUser";
 import "../assets/scss/main.scss";
-import RegistrationForm from "./registration/RegistrationForm";
-import SignInForm from "./authentication/SignInForm";
 import TopBar from "./layout/TopBar";
 import UserProfile from './authentication/UserProfile.js'
-import NewEventForm from "./calendar/NewEventForm";
+import HomePage from './layout/HomePage.js'
+import NewEventForm from "./events/NewEventForm";
 
 const App = (props) => {
   const [currentUser, setCurrentUser] = useState(undefined)
@@ -30,11 +29,13 @@ const App = (props) => {
     <Router>
       <TopBar user={currentUser} />
       <Switch>
-        <Route exact path="/" />
-        <Route exact path="/user-profile" component={UserProfile} />
-        <Route exact path="/new-event">
-          <NewEventForm user={currentUser} />
+        <Route exact path="/">
+          <HomePage user={currentUser} />
         </Route>
+        <Route exact path="/user-profile">
+          <UserProfile user={currentUser} />
+        </Route>
+        <Route exact path="/new-event" component={NewEventForm} />
       </Switch>
     </Router>
   );

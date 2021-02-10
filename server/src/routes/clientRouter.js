@@ -6,6 +6,7 @@ const router = new express.Router();
 const clientRoutes = [
   "/", 
   "/user-profile",
+  "/auth/github",
   "/new-event"
 ];
 router.get(clientRoutes, (req, res) => {

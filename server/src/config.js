@@ -5,6 +5,8 @@ import getDatabaseUrl from "./config/getDatabaseUrl.cjs";
 export default {
   nodeEnv: getNodeEnv(),
   session: { secret: process.env.SESSION_SECRET },
+  clientId: process.env.clientID,
+  clientSecret: process.env.clientSecret,
   databaseUrl: getDatabaseUrl(getNodeEnv()),
   web: { host: process.env.HOST || "0.0.0.0", port: process.env.PORT || 3000 }
 };

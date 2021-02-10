@@ -15,7 +15,6 @@
     "webpack-dev-server": "~3.11"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^1.2.0",
     "@babel/core": "7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",

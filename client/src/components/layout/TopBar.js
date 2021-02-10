@@ -1,19 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Auth0Login from '../authentication/Auth0Login.js'
-import Auth0Logout from '../authentication/Auth0Logout.js' 
 
-const TopBar = ({ user, isAuthenticated, isLoading }) => {
+const TopBar = ({ user }) => {
 
   const unauthenticatedListItems = [
     <li key="sign-in">
-      <Auth0Login />
     </li>
   ];
 
   const authenticatedListItems = [
     <li key="sign-out">
-      <Auth0Logout />
       <Link to="/user-profile">Profile</Link>
     </li>
   ];
@@ -29,7 +25,7 @@ const TopBar = ({ user, isAuthenticated, isLoading }) => {
         </ul>
       </div>
       <div className="top-bar-right">
-        <ul className="menu">{isAuthenticated ? authenticatedListItems : unauthenticatedListItems}</ul>
+        <ul className="menu">{user ? authenticatedListItems : unauthenticatedListItems}</ul>
       </div>
     </div>
   );

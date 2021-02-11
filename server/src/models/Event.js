@@ -18,8 +18,6 @@ class Event extends Model {
         meetUrl: { type: "string" },
         imageUrl: { type: "string" },
         eventTypeId: { type: ["integer", "string"] },
-        gameName: { type: "string" },
-        maxPlayers: { type: ["integer", "string"] },
         studyTopic: { type: "string" },
         yearId: { type: ["integer", "string"] },
         monthId: { type: ["integer", "string"] },
@@ -33,7 +31,7 @@ class Event extends Model {
     }
   }
   static get relationMappings() {
-    const { Month, Year, EventType } = require('./index.js')
+    const { Month, Year, EventType, Game } = require('./index.js')
 
     return {
       month: {
@@ -58,6 +56,14 @@ class Event extends Model {
         join: {
           from: 'events.eventTypeId',
           to: 'eventTypes.id'
+        }
+      },
+      game: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Game,
+        join: {
+          from: 'events.gameId',
+          to: 'games.id'
         }
       }
     }

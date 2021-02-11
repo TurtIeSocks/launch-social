@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { Redirect } from "react-router-dom"
+
 import ErrorList from "../ErrorList.js"
 import translateServerErrors from "../../services/translateServerErrors.js"
+import AsyncSelect from 'react-select/async'
 
 const today = new Date
 
@@ -11,6 +13,7 @@ const NewEventForm = (props) => {
   const [eventTypes, setEventTypes] = useState([])
   const [shouldRedirect, setShouldRedirect] = useState(false)
   const [errors, setErrors] = useState([])
+  const [inputValue, setInputValue] = useState('');
   const [eventRecord, setEventRecord] = useState({
     name: "",
     description: "",
@@ -19,7 +22,6 @@ const NewEventForm = (props) => {
     meetUrl: "",
     imageUrl: "",
     eventTypeId: "",
-    gameName: "",
     maxPlayers: "2",
     studyTopic: "",
     otherType: "",
@@ -32,6 +34,7 @@ const NewEventForm = (props) => {
     repeats: "false",
     alerts: "false"
   })
+  const [gameDetails, setGameDetails] = useState(undefined)
 
   const fetchCalendarInfo = async () => {
     try {
@@ -47,6 +50,10 @@ const NewEventForm = (props) => {
       console.error(error.message)
     }
   }
+
+  const loadOptions = (inputValue) => {
+      return fetch(`/api/v1/games/names?search=${inputValue}`).then(res => res.json())
+  };
 
   useEffect(() => {
     fetchCalendarInfo()
@@ -143,8 +150,15 @@ const NewEventForm = (props) => {
     )
   })
 
+  const handleInputChange = value => {
+    setInputValue(value)
+  };
 
-  const handleInputChange = (event) => {
+  const handleGameDetailsChange = value => {
+    setGameDetails(value);
+  }
+
+  const handleChange = (event) => {
     setEventRecord({
       ...eventRecord,
       [event.currentTarget.name]: event.currentTarget.value,
@@ -160,7 +174,7 @@ const NewEventForm = (props) => {
       meetUrl: "",
       imageUrl: "",
       eventTypeId: "",
-      gameName: "",
+      gameDetails: "",
       maxPlayers: "",
       studyTopic: "",
       otherType: "",
@@ -177,6 +191,7 @@ const NewEventForm = (props) => {
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
+    eventRecord.gameDetails = gameDetails
     addNewEvent(eventRecord)
     fieldReset()
   }
@@ -222,24 +237,20 @@ const NewEventForm = (props) => {
   if (eventRecord.eventTypeId === "1") {
     specialFields.push(
       <div key={eventRecord.eventTypeId}>
-        <label htmlFor="gameName">
+        <label htmlFor='gameDetails'>
           Game Name:
         </label>
-        <input type="text"
-          id="gameName"
-          name="gameName"
-          onChange={handleInputChange}
-          value={eventRecord.gameName}
+        <AsyncSelect
+          id='gameDetails'
+          name='gameDetails'
+          value={eventRecord.gameDetails}
+          getOptionLabel={e => e.name}
+          getOptionValue={e => e.id}
+          loadOptions={loadOptions}
+          onInputChange={handleInputChange}
+          onChange={handleGameDetailsChange}
         />
-        <label htmlFor="maxPlayers">
-          Max Number of Players:
-        </label>
-        <input type="text"
-          id="maxPlayers"
-          name="maxPlayers"
-          onChange={handleInputChange}
-          value={eventRecord.maxPlayers}
-        />
+        <pre>Selected Value: {JSON.stringify(gameDetails || {}, null, 2)}</pre>
       </div>
     )
   } else if (eventRecord.eventTypeId === "2") {
@@ -251,7 +262,7 @@ const NewEventForm = (props) => {
         <input type="text"
           id="studyTopic"
           name="studyTopic"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.studyTopic}
         />
       </div>
@@ -265,7 +276,7 @@ const NewEventForm = (props) => {
         <input type="text"
           id="otherType"
           name="otherType"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.otherType}
         />
       </div>
@@ -283,7 +294,7 @@ const NewEventForm = (props) => {
         <input type="text"
           id="name"
           name="name"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.name}
         />
 
@@ -294,7 +305,7 @@ const NewEventForm = (props) => {
           type="text"
           name="description"
           id="description"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.description}
         />
 
@@ -305,7 +316,7 @@ const NewEventForm = (props) => {
           type="text"
           name="location"
           id="location"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.location}
         />
 
@@ -316,7 +327,7 @@ const NewEventForm = (props) => {
           type="text"
           name="meetUrl"
           id="meetUrl"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.meetUrl}
         />
 
@@ -327,7 +338,7 @@ const NewEventForm = (props) => {
           type="text"
           name="imageUrl"
           id="imageUrl"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.imageUrl}
         />
 
@@ -338,7 +349,7 @@ const NewEventForm = (props) => {
           type="text"
           name="url"
           id="url"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.url}
         />
 
@@ -347,7 +358,7 @@ const NewEventForm = (props) => {
             </label>
         <select
           name="eventTypeId"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.eventTypeId}>
           {availEventTypes}
         </select>
@@ -359,7 +370,7 @@ const NewEventForm = (props) => {
             </label>
         <select
           name="yearId"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.yearId}>
           {availYears}
         </select>
@@ -369,7 +380,7 @@ const NewEventForm = (props) => {
             </label>
         <select
           name="monthId"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.monthId}>
           {availMonths}
         </select>
@@ -379,7 +390,7 @@ const NewEventForm = (props) => {
             </label>
         <select
           name="day"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.day}>
           {availDays}
         </select>
@@ -389,7 +400,7 @@ const NewEventForm = (props) => {
             </label>
         <select
           name="hour"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.hour}>
           {availHours}
         </select>
@@ -399,7 +410,7 @@ const NewEventForm = (props) => {
             </label>
         <select
           name="minute"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.minute}>
           {availMinutes}
         </select>
@@ -409,7 +420,7 @@ const NewEventForm = (props) => {
             </label>
         <select
           name="duration"
-          onChange={handleInputChange}
+          onChange={handleChange}
           value={eventRecord.duration}>
           {availDurations}
         </select>

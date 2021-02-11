@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { Redirect } from "react-router-dom"
-import EventTile from '../events/EventTile.js' 
+import EventTile from '../events/EventTile.js'
 
 const HomePage = props => {
   const [events, setEvents] = useState([])
+  const [games, setGames] = useState([])
 
   const fetchEvents = async () => {
     try {

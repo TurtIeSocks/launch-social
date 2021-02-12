@@ -5,6 +5,7 @@ const { ValidationError } = objection
 import { Event, EventType, Game, GameImage, GamePlatform, GameVideo } from '../../../models/index.js'
 import EventSerializer from "../../../serializers/EventSerializer.js"
 import cleanUserInput from "../../../services/cleanUserInput.js"
+import eventInterestsRouter from './eventInterestsRouter.js'
 
 const eventsRouter = new express.Router()
 
@@ -46,21 +47,26 @@ eventsRouter.post("/", async (req, res) => {
 
     let gameId
     if (gameDetails) {
-      const { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails
+      const checkIfGameAlreadyExists = await Game.query().findOne({ apiId: gameDetails.id })
+      if (!checkIfGameAlreadyExists) {
+        const { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails
 
-      let newGame = await Game.query()
-        .insert({ apiId: id, name: name, summary: summary, maxPlayers: multiplayer_modes[0].onlinemax, coverArt: cover.image_id, url: url })
-        .returning('*')
-      gameId = newGame.id
-
-      for (const image of screenshots) {
-        await GameImage.query().insert({ imageId: image.image_id, gameId })
-      }
-      for (const video of videos) {
-        await GameVideo.query().insert({ videoId: video.video_id, gameId })
-      }
-      for (const platform of platforms) {
-        await GamePlatform.query().insert({ name: platform.name, imageId: platform.platform_logo.image_id, gameId })
+        let newGame = await Game.query()
+          .insert({ apiId: id, name: name, summary: summary, maxPlayers: multiplayer_modes[0].onlinemax, coverArt: cover.image_id, url: url })
+          .returning('*')
+        gameId = newGame.id
+  
+        for (const image of screenshots) {
+          await GameImage.query().insert({ imageId: image.image_id, gameId })
+        }
+        for (const video of videos) {
+          await GameVideo.query().insert({ videoId: video.video_id, gameId })
+        }
+        for (const platform of platforms) {
+          await GamePlatform.query().insert({ name: platform.name, imageId: platform.platform_logo.image_id, gameId })
+        }  
+      } else {
+        gameId = checkIfGameAlreadyExists.id
       }
     }
 
@@ -74,5 +80,7 @@ eventsRouter.post("/", async (req, res) => {
     return res.status(500).json({ error: error })
   }
 })
+
+eventsRouter.use('/:eventId/interests', eventInterestsRouter)
 
 export default eventsRouter

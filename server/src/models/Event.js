@@ -31,7 +31,7 @@ class Event extends Model {
     }
   }
   static get relationMappings() {
-    const { Month, Year, EventType, Game } = require('./index.js')
+    const { Month, Year, EventType, Game, User, Interest } = require('./index.js')
 
     return {
       month: {
@@ -64,6 +64,34 @@ class Event extends Model {
         join: {
           from: 'events.gameId',
           to: 'games.id'
+        }
+      },
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'events.userId',
+          to: 'users.id'
+        }
+      },
+      users: {
+        relation: Model.ManyToManyRelation,
+        modelClass: User,
+        join: {
+          from: 'events.id',
+          through: {
+            from: 'interests.eventsId',
+            to: 'interests.userId'
+          },
+          to: 'users.id'
+        }
+      },
+      interests: {
+        relation: Model.HasManyRelation,
+        modelClass: Interest,
+        join: {
+          from: 'events.id',
+          to: 'interests.eventId'
         }
       }
     }

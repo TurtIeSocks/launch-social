@@ -39,9 +39,9 @@ const EventTile = ({ event, user }) => {
     return setUserInterests(state)
   }
 
-  const newVote = async (interestPayload) => {
+  const newInterest = async (interestPayload) => {
     try {
-      const response = await fetch(`/api/v1/events/${event.id}/votes`, {
+      const response = await fetch(`/api/v1/events/${event.id}/interests`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json"
@@ -60,14 +60,14 @@ const EventTile = ({ event, user }) => {
     }
   }
 
-  const editVote = async (votePayload) => {
+  const editInterest = async (interestPayload) => {
     try {
-      const response = await fetch(`/api/v1/events/${event.id}/votes`, {
+      const response = await fetch(`/api/v1/events/${event.id}/interests`, {
         method: "PATCH",
         headers: new Headers({
           "Content-Type": "application/json"
         }),
-        body: JSON.stringify(votePayload)
+        body: JSON.stringify(interestPayload)
       })
       if (!response.ok) {
         throw new Error(`${response.status} (${response.statusText})`)
@@ -80,9 +80,9 @@ const EventTile = ({ event, user }) => {
     }
   }
 
-  const removeVote = async () => {
+  const removeInterest = async () => {
     try {
-      const response = await fetch(`/api/v1/events/${event.id}/votes`, {
+      const response = await fetch(`/api/v1/events/${event.id}/interests`, {
         method: "DELETE",
         headers: new Headers({
           "Content-Type": "application/json"
@@ -103,22 +103,22 @@ const EventTile = ({ event, user }) => {
   const isAttendingClickHandler = (event) => {
     event.preventDefault()
     if (userInterests.isInterested && !userInterests.isAttending) {
-      editVote({ value: 'attending' })
+      editInterest({ value: 'attending' })
     } else if (userInterests.isAttending) {
-      removeVote()
+      removeInterest()
     } else {
-      newVote({ value: 'attending' })
+      newInterest({ value: 'attending' })
     }
   }
 
   const isInterestedClickHandler = (event) => {
     event.preventDefault()
     if (!userInterests.isInterested && userInterests.isAttending) {
-      editVote({ value: 'interested' })
+      editInterest({ value: 'interested' })
     } else if (userInterests.isInterested) {
-      removeVote()
+      removeInterest()
     } else {
-      newVote({ value: 'interested' })
+      newInterest({ value: 'interested' })
     }
   }
 

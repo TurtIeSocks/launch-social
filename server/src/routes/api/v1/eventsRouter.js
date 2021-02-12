@@ -81,6 +81,6 @@ eventsRouter.post("/", async (req, res) => {
   }
 })
 
-eventsRouter.use('/:eventId/votes', eventInterestsRouter)
+eventsRouter.use('/:eventId/interests', eventInterestsRouter)
 
 export default eventsRouter

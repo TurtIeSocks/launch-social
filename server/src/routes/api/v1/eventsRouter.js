@@ -12,6 +12,7 @@ const eventsRouter = new express.Router()
 eventsRouter.get("/", async (req, res) => {
   try {
     const events = await Event.query()
+      .orderBy([ 'yearId', 'monthId', 'day'])
     const serializedEvents = await EventSerializer.getAll(events)
     res.status(200).json({ events: serializedEvents })
   } catch (error) {
@@ -49,22 +50,32 @@ eventsRouter.post("/", async (req, res) => {
     if (gameDetails) {
       const checkIfGameAlreadyExists = await Game.query().findOne({ apiId: gameDetails.id })
       if (!checkIfGameAlreadyExists) {
-        const { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails
+        let { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails
+        if (!multiplayer_modes) multiplayer_modes = [{ onlinemax: 1 }]
 
-        let newGame = await Game.query()
+        const newGame = await Game.query()
           .insert({ apiId: id, name: name, summary: summary, maxPlayers: multiplayer_modes[0].onlinemax, coverArt: cover.image_id, url: url })
           .returning('*')
         gameId = newGame.id
-  
-        for (const image of screenshots) {
-          await GameImage.query().insert({ imageId: image.image_id, gameId })
+
+        if (screenshots) {
+          for (const image of screenshots) {
+            await GameImage.query().insert({ imageId: image.image_id, gameId })
+          }
         }
-        for (const video of videos) {
-          await GameVideo.query().insert({ videoId: video.video_id, gameId })
+        if (videos) {
+          for (const video of videos) {
+            await GameVideo.query().insert({ videoId: video.video_id, gameId })
+          }
         }
-        for (const platform of platforms) {
-          await GamePlatform.query().insert({ name: platform.name, imageId: platform.platform_logo.image_id, gameId })
-        }  
+        if (platforms) {
+          for (const platform of platforms) {
+            let name = platform.name ? platform.name : null
+            let imageId = platform.platform_logo ? platform.platform_logo.image_id : null
+            await GamePlatform.query().insert({ name, imageId, gameId })
+          }
+        }
+
       } else {
         gameId = checkIfGameAlreadyExists.id
       }

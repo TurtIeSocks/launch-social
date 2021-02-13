@@ -1,7 +1,26 @@
+import { Button, ThemeProvider } from "@material-ui/core"
 import React, { useState, useEffect } from "react"
-import { Link } from 'react-router-dom'
+import EventTileStyle from './EventTileStyle'
+import { createMuiTheme } from '@material-ui/core/styles'
 
-const EventTile = ({ event, user }) => {
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#ED1A7A',
+      main: '#ED1A7A',
+      dark: '#ED1A7A',
+      contrastText: '#000',
+    },
+    secondary: {
+      light: '#49AEB9',
+      main: '#49AEB9',
+      dark: '#49AEB9',
+      contrastText: '#fff',
+    }
+  }
+});
+
+const EventTileLogic = ({ event, user }) => {
   const [userInterests, setUserInterests] = useState({
     isAttending: false,
     isInterested: false
@@ -11,16 +30,14 @@ const EventTile = ({ event, user }) => {
     interested: event.totalInterests.value
   })
 
-  let upVoteButtonClass = 'button'
-
+  let upVoteButtonClass = 'default'
   if (userInterests.isAttending) {
-    upVoteButtonClass = 'success button'
+    upVoteButtonClass = 'primary'
   }
 
-  let downVoteButtonClass = 'button'
-
+  let downVoteButtonClass = 'default'
   if (userInterests.isInterested) {
-    downVoteButtonClass = 'alert button'
+    downVoteButtonClass = 'secondary'
   }
 
   useEffect(() => {
@@ -52,7 +69,6 @@ const EventTile = ({ event, user }) => {
         throw new Error(`${response.status} (${response.statusText})`)
       }
       const body = await response.json()
-      console.log(body)
       getUserInterestState(body.interest.value)
       setTotalInterests({ attending: body.totalAttending.value, interested: body.totalInterested.value })
     } catch (error) {
@@ -122,25 +138,27 @@ const EventTile = ({ event, user }) => {
     }
   }
 
-  let voteButtons = ''
+  let attendingButton = ''
+  let interestedButton = ''
   if (user !== null) {
-    voteButtons =
-      <div>
-        <button className={upVoteButtonClass} onClick={isAttendingClickHandler}>
-          Attending ( {totalInterests.attending} )
-        </button>
-        <button className={downVoteButtonClass} onClick={isInterestedClickHandler}>
-          Interested ( {totalInterests.interested} )
-        </button>
-      </div>
+    attendingButton =
+      <ThemeProvider theme={theme}>
+          <Button color={upVoteButtonClass} onClick={isAttendingClickHandler}>Attending: {totalInterests.attending}</Button>
+      </ThemeProvider>
+    interestedButton =
+      <ThemeProvider theme={theme}>
+          <Button color={downVoteButtonClass} onClick={isInterestedClickHandler}>Interested: {totalInterests.interested}</Button>
+      </ThemeProvider>
   }
 
   return (
-    <div className='callout'>
-      <Link to={`/events/${event.id}`}>{event.name}</Link>
-      {voteButtons}
-    </div>
+    <EventTileStyle
+      event={event}
+      user={user}
+      attending={attendingButton}
+      interested={interestedButton}
+    />
   )
 }
 
-export default EventTile
+export default EventTileLogic

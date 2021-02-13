@@ -10,7 +10,6 @@ exports.up = async (knex) => {
     table.dropColumn('gameName')
     table.dropColumn('maxPlayers')
     table.bigInteger('gameId')
-      .notNullable()
       .index()
       .references('games.id')
       .unsigned()

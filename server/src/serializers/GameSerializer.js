@@ -20,6 +20,13 @@ class GameSerializer {
     return serializedGame
   }
 
+  static async getAll(games) {
+    return await Promise.all(games.map(async game => {
+      const serializedGame = await GameSerializer.getOne(game)
+      return serializedGame
+    }))
+  }
+
   static async getImage(image) {
     const allowedAttributes = ["imageId"]
 

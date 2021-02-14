@@ -5,7 +5,7 @@ const AuthenticationCheck = ({ component: Component, user }) => {
   if (user !== null) {
     return <Component />;
   }
-  return <Redirect to="/user-sessions/new" />;
+  return <a href="/auth/github" />;
 };
 
 const AuthenticatedRoute = ({ component, user, ...rest }) => {

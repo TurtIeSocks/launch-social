@@ -10,7 +10,8 @@ import SignOutButton from '../authentication/SignOutButton'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    color: 'white'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -27,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     margin: theme.spacing(1),
     width: 65
+  },
+  link: {
+    color: 'white'
   }
 }));
 
@@ -52,10 +56,6 @@ const TopBar = ({ user }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -72,10 +72,10 @@ const TopBar = ({ user }) => {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              <Link to="/"><img className={classes.logo} src='https://i.imgur.com/hAOtbjn.png' />&nbsp;Launch Social</Link>
+              <Link to="/" className={classes.link}><img className={classes.logo} src='https://i.imgur.com/hAOtbjn.png' />&nbsp;Launch Social</Link>
             </Typography>
             <Typography variant="h6" className={classes.title}>
-              <Link to="/new-event"><Create />Add an Event</Link>
+              <Link to="/new-event" className={classes.link}><Create />Add an Event</Link>
             </Typography>
             {user && (
               <div>
@@ -115,7 +115,7 @@ const TopBar = ({ user }) => {
               </div>
             )}
             {!user && (
-              <a href='/auth/github'><FontAwesomeIcon icon={faGithub} /> Sign In with GitHub</a>
+              <a href='/auth/github' className={classes.link}><FontAwesomeIcon icon={faGithub} /> Sign In with GitHub</a>
             )}
           </Toolbar>
         </AppBar>

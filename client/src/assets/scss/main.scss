@@ -18,6 +18,8 @@ body {
   background-color: rgb(28,34,36);
 }
 
-a {
-  color: white;
+.react-select-menu {
+  z-index: 100 !important;
+  width: 91%;
+  margin-left: 3vw;
 }

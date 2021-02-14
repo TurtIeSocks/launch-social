@@ -12,7 +12,7 @@ const eventsRouter = new express.Router()
 eventsRouter.get("/", async (req, res) => {
   try {
     const events = await Event.query()
-      .orderBy([ 'yearId', 'monthId', 'day'])
+      .orderBy([ 'startDate', 'endDate' ])
     const serializedEvents = await EventSerializer.getAll(events)
     res.status(200).json({ events: serializedEvents })
   } catch (error) {
@@ -36,18 +36,18 @@ eventsRouter.post("/", async (req, res) => {
     const { body } = req
     const formInput = cleanUserInput(body)
     let { eventTypeId } = formInput
-    const { name, description, location, url, meetUrl, imageUrl, gameDetails, studyTopic, otherType, yearId, monthId, day, hour, minute, duration, repeats, alerts } = formInput
+    const { name, description, location, meetUrl, gameDetails, studyTopic, otherType, startDate, endDate, repeats, alerts } = formInput
     const userId = req.user.id
-
+    
     if (otherType) {
       let newType = await EventType.query()
         .insert({ name: otherType })
         .returning('*')
       eventTypeId = newType.id
     }
-
+    
     let gameId
-    if (gameDetails) {
+    if (gameDetails.id !== 0) {
       const checkIfGameAlreadyExists = await Game.query().findOne({ apiId: gameDetails.id })
       if (!checkIfGameAlreadyExists) {
         let { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails
@@ -75,14 +75,13 @@ eventsRouter.post("/", async (req, res) => {
             await GamePlatform.query().insert({ name, imageId, gameId })
           }
         }
-
       } else {
         gameId = checkIfGameAlreadyExists.id
       }
     }
-
+    
     await Event.query()
-      .insert({ userId, name, description, location, url, meetUrl, imageUrl, eventTypeId, gameId, studyTopic, yearId, monthId, day, hour, minute, duration, repeats, alerts })
+      .insert({ userId, name, description, location, meetUrl, eventTypeId, gameId, studyTopic, startDate, endDate, repeats, alerts })
     return res.status(201).json()
   } catch (error) {
     if (error instanceof ValidationError) {

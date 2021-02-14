@@ -7,7 +7,9 @@ import "../assets/scss/main.scss";
 import TopBar from "./layout/TopBar";
 import UserProfile from './authentication/UserProfile.js'
 import HomePage from './layout/HomePage.js'
-import NewEventForm from "./events/NewEventForm";
+import NewEventForm from "./events/NewEventForm.js";
+import EventShow from "./events/EventShow.js";
+import AuthenticatedRoute from "./authentication/AuthenticatedRoute";
 
 const App = (props) => {
   const [currentUser, setCurrentUser] = useState(undefined)
@@ -32,10 +34,13 @@ const App = (props) => {
         <Route exact path="/">
           <HomePage user={currentUser} />
         </Route>
-        <Route exact path="/user-profile">
+        <AuthenticatedRoute exact path="/user-profile">
           <UserProfile user={currentUser} />
+        </AuthenticatedRoute>
+        <Route exact path="/events/:id">
+          <EventShow user={currentUser} />
         </Route>
-        <Route exact path="/new-event" component={NewEventForm} />
+        <AuthenticatedRoute exact path="/new-event" component={NewEventForm} user={currentUser}/>
       </Switch>
     </Router>
   );

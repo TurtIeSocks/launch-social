@@ -8,48 +8,26 @@ class Event extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["name", "eventTypeId", "yearId", "monthId", "day", "hour", "minute", "duration"],
+      required: ["name", "description", "eventTypeId", "startDate", "endDate"],
       properties: {
         userId: { type: ["integer", "string"] },
         name: { type: "string", minLength: 1 },
         description: { type: "string" },
         location: { type: "string" },
-        url: { type: "string" },
         meetUrl: { type: "string" },
-        imageUrl: { type: "string" },
         eventTypeId: { type: ["integer", "string"] },
         studyTopic: { type: "string" },
-        yearId: { type: ["integer", "string"] },
-        monthId: { type: ["integer", "string"] },
-        day: { type: ["integer", "string"] },
-        hour: { type: ["integer", "string"] },
-        minute: { type: ["integer", "string"] },
-        duration: { type: ["integer", "string"] },
+        startDate: { type: ["integer", "string"] },
+        endDate: { type: ["integer", "string"] },
         repeats: { type: ["boolean", "string"] },
         alerts: { type: ["boolean", "string"] }
       }
     }
   }
   static get relationMappings() {
-    const { Month, Year, EventType, Game, User, Interest } = require('./index.js')
+    const { EventType, Game, User, Interest } = require('./index.js')
 
     return {
-      month: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: Month,
-        join: {
-          from: 'events.monthId',
-          to: 'months.id'
-        }
-      },
-      year: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: Year,
-        join: {
-          from: 'events.yearId',
-          to: 'years.id'
-        }
-      },
       eventType: {
         relation: Model.BelongsToOneRelation,
         modelClass: EventType,

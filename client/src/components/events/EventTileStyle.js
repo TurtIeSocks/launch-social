@@ -68,17 +68,26 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 }));
 
 const EventTileStyle = ({ event, user, interested, attending }) => {
-  console.log(user)
   const styles = useStyles();
   const gutterStyles = usePushingGutterStyles({ space: 1.5 });
   const labelStyles = useLabelIconStyles({ linked: true });
   const flexStyles = useRowFlexStyles();
 
+  const convertDate = (epochTime) => {
+    const date = new Date(parseInt(epochTime))
+    const dayOfWeek = date.toLocaleDateString('default', { weekday: 'short' })
+    const month = date.toLocaleDateString('default', { month: 'short' })
+    const day = date.getDate()
+    const time = date.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+    return `${dayOfWeek} ${month} ${day} ${time}`
+  }
+
   let coverArt = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1920px-Unofficial_JavaScript_logo_2.svg.png'
   if (event.gameDetails) {
     coverArt = `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.gameDetails.coverArt}.jpg`
   }
-  const titleText = `${event.month.name} ${event.day}, ${event.year.year}`
+  
+  const titleText = `${convertDate(event.startDate)}`
 
   return (
     <Card className={styles.card} elevation={3}>

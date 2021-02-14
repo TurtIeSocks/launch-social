@@ -1,19 +1,66 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from 'react'
 import { Redirect } from "react-router-dom"
-
-import ErrorList from "../ErrorList.js"
 import translateServerErrors from "../../services/translateServerErrors.js"
+import ErrorList from "../ErrorList.js"
+
+import { Grid, TextField, Button, MenuItem } from '@material-ui/core'
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+
+import DateFnsUtils from '@date-io/date-fns'
 import AsyncSelect from 'react-select/async'
 
-const today = new Date
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(2),
+    },
+    flexGrow: 1,
+    marginTop: theme.spacing(3),
+    backgroundColor: '#EEEEEE',
+    border: 'solid 5px #ED1A7A',
+    borderRadius: theme.spacing(4),
+    textAlign: 'center',
+    padding: theme.spacing(3),
+    color: '#33485E',
+  },
+  formTitle: {
+    fontWeight: 'bold',
+    fontSize: '5vw',
+  },
+  formInput: {
+    width: '80%',
+    textAlign: 'center',
+  },
+  longFormInput: {
+    width: '90%'
+  }
+}));
 
-const NewEventForm = (props) => {
-  const [months, setMonths] = useState([])
-  const [years, setYears] = useState([])
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#ED1A7A',
+      main: '#ED1A7A',
+      dark: '#ED1A7A',
+      contrastText: '#000',
+    },
+    secondary: {
+      light: '#49AEB9',
+      main: '#49AEB9',
+      dark: '#49AEB9',
+      contrastText: '#fff',
+    }
+  }
+});
+const currentDate = new Date
+
+const NewEventForm = props => {
+  const classes = useStyles();
+  const [inputValue, setInputValue] = useState(null)
   const [eventTypes, setEventTypes] = useState([])
-  const [shouldRedirect, setShouldRedirect] = useState(false)
   const [errors, setErrors] = useState([])
-  const [inputValue, setInputValue] = useState('');
+  const [shouldRedirect, setShouldRedirect] = useState(false)
   const [eventRecord, setEventRecord] = useState({
     name: "",
     description: "",
@@ -22,184 +69,34 @@ const NewEventForm = (props) => {
     meetUrl: "",
     imageUrl: "",
     eventTypeId: "",
-    maxPlayers: "2",
+    gameDetails: { id: 0, name: 'Search for the game you want to play...' },
     studyTopic: "",
     otherType: "",
-    yearId: "",
-    monthId: "",
-    day: today.getDate(),
-    hour: today.getHours(),
-    minute: "0",
-    duration: "1",
+    startDate: currentDate.getTime(),
+    endDate: currentDate.getTime(),
     repeats: "false",
-    alerts: "false"
+    alerts: "false",
   })
-  const [gameDetails, setGameDetails] = useState(undefined)
 
-  const fetchCalendarInfo = async () => {
+  const fetchGamesAndEventTypes = async () => {
     try {
       const response = await fetch(`/api/v1/basics`)
       if (!response.ok) {
         throw new Error(`${response.status} (${response.statusText})`)
       }
       const body = await response.json()
-      setMonths(body.months)
-      setYears(body.years)
-      setEventTypes([{ name: "", id: "" }, ...body.eventTypes])
+      const eventTypes = body.eventTypes.map(eventType => {
+        return { key: eventType.id, label: eventType.name, value: eventType.id }
+      })
+      setEventTypes([{ key: 0, label: "Select One", value: 0 }, ...eventTypes])
     } catch (error) {
       console.error(error.message)
     }
   }
 
   const loadOptions = (inputValue) => {
-      return fetch(`/api/v1/games/names?search=${inputValue}`).then(res => res.json())
+    return fetch(`/api/v1/games/names?search=${inputValue}`).then(res => res.json())
   };
-
-  useEffect(() => {
-    fetchCalendarInfo()
-  }, [])
-
-  useEffect(() => {
-    let currentYearId
-    let currentMonthId
-    years.forEach(year => {
-      if (year.year === today.getFullYear()) {
-        currentYearId = year.id
-        months.forEach(month => {
-          if (today.getMonth() === 1) {
-            if (month.jsValue === today.getMonth()) {
-              currentMonthId = year % 4 === 0 ? "3" : "2"
-            }
-          } else {
-            if (month.jsValue === today.getMonth()) {
-              currentMonthId = month.id
-            }
-          }
-        })
-      }
-    })
-
-    setEventRecord({ ...eventRecord, yearId: currentYearId, monthId: currentMonthId })
-  }, [years])
-
-  const availYears = years.map(year => {
-    return (
-      <option key={year.id} value={year.id}>
-        {year.year}
-      </option>
-    )
-  })
-
-  const availMonths = months.map(month => {
-    if (eventRecord.yearId !== '' && eventRecord.yearId !== undefined) {
-      if (years[eventRecord.yearId - 1].leapYear && month.id !== "2") {
-        return (
-          <option key={month.id} value={month.id}>
-            {month.name}
-          </option>
-        )
-      } else if (!years[eventRecord.yearId - 1].leapYear && month.id !== "3") {
-        return (
-          <option key={month.id} value={month.id}>
-            {month.name}
-          </option>
-        )
-      }
-    }
-  })
-
-  const availDays = []
-  const availHours = []
-  const availMinutes = []
-
-  const durations = [15, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, "All Day"]
-  const availDurations = []
-
-  for (let i = 0; i < 60; i++) {
-    if (eventRecord.monthId !== '' && eventRecord.monthId !== undefined && i !== 0 && i <= months[eventRecord.monthId - 1].numOfDays) {
-      if (eventRecord.yearId)
-        availDays.push(<option key={i} value={i}>{i}</option>)
-    }
-    if (i < 24) {
-      let usaFriendlyTime = i < 12 ? `${i} AM` : i === 12 ? `${i} PM` : `${i - 12} PM`
-      availHours.push(<option key={i} value={i}>{usaFriendlyTime}</option>)
-    }
-    if (i % 5 === 0) {
-      let cleanMinutes = i < 10 ? `0${i}` : i
-      availMinutes.push(<option key={i} value={i}>{cleanMinutes}</option>)
-    }
-    if (i < durations.length) {
-      if (durations[i] < 13) {
-        if (durations[i] === 1) {
-          availDurations.push(<option key={i} value={durations[i]}>{`${durations[i]} Hour`}</option>)
-        } else {
-          availDurations.push(<option key={i} value={durations[i]}>{`${durations[i]} Hours`}</option>)
-        }
-      } else if (durations[i] > 13) {
-        availDurations.push(<option key={i} value={durations[i]}>{`${durations[i]} Minutes`}</option>)
-      } else {
-        availDurations.push(<option key={i} value={24}>{`${durations[i]}`}</option>)
-      }
-    }
-  }
-  const availEventTypes = eventTypes.map(eventType => {
-    return (
-      <option key={eventType.id} value={eventType.id}>
-        {eventType.name}
-      </option>
-    )
-  })
-
-  const handleInputChange = value => {
-    setInputValue(value)
-  };
-
-  const handleGameDetailsChange = value => {
-    setGameDetails(value);
-  }
-
-  const handleChange = (event) => {
-    setEventRecord({
-      ...eventRecord,
-      [event.currentTarget.name]: event.currentTarget.value,
-    })
-  }
-
-  const fieldReset = () => {
-    setEventRecord({
-      name: "",
-      description: "",
-      location: "",
-      url: "",
-      meetUrl: "",
-      imageUrl: "",
-      eventTypeId: "",
-      gameDetails: "",
-      maxPlayers: "",
-      studyTopic: "",
-      otherType: "",
-      yearId: "",
-      monthId: "",
-      day: today.getDate(),
-      hour: today.getHours(),
-      minute: 0,
-      duration: 0,
-      repeats: false,
-      alerts: false
-    })
-  }
-
-  const onSubmitHandler = (event) => {
-    event.preventDefault()
-    eventRecord.gameDetails = gameDetails
-    addNewEvent(eventRecord)
-    fieldReset()
-  }
-
-  const clearForm = (event) => {
-    event.preventDefault()
-    fieldReset()
-  }
 
   const addNewEvent = async (eventPayload) => {
     try {
@@ -229,211 +126,248 @@ const NewEventForm = (props) => {
     }
   }
 
+  useEffect(() => {
+    fetchGamesAndEventTypes()
+  }, [])
+
+  const handleChange = (event) => {
+    if (event.currentTarget.name) {
+      setEventRecord({
+        ...eventRecord,
+        [event.currentTarget.name]: event.currentTarget.value,
+      })
+    } else {
+      setEventRecord({
+        ...eventRecord,
+        eventTypeId: event.target.value,
+      })
+    }
+  }
+
+  const handleStartDateChange = (date) => {
+    setEventRecord({
+      ...eventRecord,
+      startDate: date.getTime(),
+    })
+  };
+
+  const handleEndDateChange = (date) => {
+    setEventRecord({
+      ...eventRecord,
+      endDate: date.getTime(),
+    })
+  };
+
+  const handleInputChange = value => {
+    setInputValue(value)
+  };
+
+  const handleGameDetailsChange = value => {
+    setEventRecord({
+      ...eventRecord,
+      gameDetails: value
+    })
+  }
+
+  const fieldReset = () => {
+    setEventRecord({
+      name: "",
+      description: "",
+      location: "",
+      url: "",
+      meetUrl: "",
+      imageUrl: "",
+      eventTypeId: 0,
+      gameDetails: { id: 0, name: 'Search for the game you want to play...' },
+      studyTopic: "",
+      otherType: "",
+      startDate: new Date,
+      endDate: new Date,
+      repeats: "",
+      alerts: "",
+    })
+  }
+
+  const clearForm = (event) => {
+    event.preventDefault()
+    fieldReset()
+  }
+
+  const onSubmitHandler = (event) => {
+    event.preventDefault()
+    addNewEvent(eventRecord)
+    fieldReset()
+  }
+
   if (shouldRedirect) {
     return <Redirect to="/" />
   }
 
-  const specialFields = []
-  if (eventRecord.eventTypeId === "1") {
-    specialFields.push(
-      <div key={eventRecord.eventTypeId}>
-        <label htmlFor='gameDetails'>
-          Game Name:
-        </label>
-        <AsyncSelect
-          id='gameDetails'
-          name='gameDetails'
-          value={eventRecord.gameDetails}
-          getOptionLabel={e => e.name}
-          getOptionValue={e => e.id}
-          loadOptions={loadOptions}
-          onInputChange={handleInputChange}
-          onChange={handleGameDetailsChange}
-        />
-        <pre>Selected Value: {JSON.stringify(gameDetails || {}, null, 2)}</pre>
-      </div>
+  let specialFields = ''
+  if (eventRecord.eventTypeId == 1) {
+    specialFields = (
+      <AsyncSelect
+        id='gameDetails'
+        name='gameDetails'
+        className='react-select-menu'
+        value={eventRecord.gameDetails}
+        cacheOptions
+        getOptionLabel={e => e.name}
+        getOptionValue={e => e.id}
+        loadOptions={loadOptions}
+        onInputChange={handleInputChange}
+        onChange={handleGameDetailsChange}
+      />
     )
-  } else if (eventRecord.eventTypeId === "2") {
-    specialFields.push(
-      <div key={eventRecord.eventTypeId}>
-        <label htmlFor="studyTopic">
-          Study Session Topic:
-        </label>
-        <input type="text"
-          id="studyTopic"
-          name="studyTopic"
-          onChange={handleChange}
-          value={eventRecord.studyTopic}
-        />
-      </div>
+  } else if (eventRecord.eventTypeId == 2) {
+    specialFields = (
+      <TextField
+        className={classes.longFormInput}
+        name="studyTopic"
+        id="outlined-name"
+        label="Study Topic"
+        value={eventRecord.studyTopic}
+        variant="outlined"
+        onChange={handleChange}
+      />
     )
-  } else if (eventRecord.eventTypeId === "3") {
-    specialFields.push(
-      <div key={eventRecord.eventTypeId}>
-        <label htmlFor="otherType">
-          Set Your Own Event Type:
-        </label>
-        <input type="text"
-          id="otherType"
-          name="otherType"
-          onChange={handleChange}
-          value={eventRecord.otherType}
-        />
-      </div>
+  } else if (eventRecord.eventTypeId == 3) {
+    specialFields = (
+      <TextField
+        className={classes.longFormInput}
+        name="otherType"
+        id="outlined-name"
+        label="Other Type of Event"
+        value={eventRecord.otherType}
+        variant="outlined"
+        onChange={handleChange}
+      />
     )
   }
 
   return (
-    <div>
-      <h1>Add a New Event</h1>
-      <ErrorList errors={errors} />
-      <form onSubmit={onSubmitHandler}>
-        <label htmlFor="name">
-          Name:
-        </label>
-        <input type="text"
-          id="name"
-          name="name"
-          onChange={handleChange}
-          value={eventRecord.name}
-        />
-
-        <label htmlFor="description">
-          Description:
-        </label>
-        <input
-          type="text"
-          name="description"
-          id="description"
-          onChange={handleChange}
-          value={eventRecord.description}
-        />
-
-        <label htmlFor="location">
-          Location:
-        </label>
-        <input
-          type="text"
-          name="location"
-          id="location"
-          onChange={handleChange}
-          value={eventRecord.location}
-        />
-
-        <label htmlFor="meetUrl">
-          Virtual Meeting URL:
-        </label>
-        <input
-          type="text"
-          name="meetUrl"
-          id="meetUrl"
-          onChange={handleChange}
-          value={eventRecord.meetUrl}
-        />
-
-        <label htmlFor="imageUrl">
-          Image URL:
-        </label>
-        <input
-          type="text"
-          name="imageUrl"
-          id="imageUrl"
-          onChange={handleChange}
-          value={eventRecord.imageUrl}
-        />
-
-        <label htmlFor="url">
-          Additional Info URL:
-        </label>
-        <input
-          type="text"
-          name="url"
-          id="url"
-          onChange={handleChange}
-          value={eventRecord.url}
-        />
-
-        <label htmlFor="eventTypeId">
-          Event Type:
-            </label>
-        <select
-          name="eventTypeId"
-          onChange={handleChange}
-          value={eventRecord.eventTypeId}>
-          {availEventTypes}
-        </select>
-
-        {specialFields}
-
-        <label htmlFor="yearId">
-          Year:
-            </label>
-        <select
-          name="yearId"
-          onChange={handleChange}
-          value={eventRecord.yearId}>
-          {availYears}
-        </select>
-
-        <label htmlFor="monthId">
-          Month:
-            </label>
-        <select
-          name="monthId"
-          onChange={handleChange}
-          value={eventRecord.monthId}>
-          {availMonths}
-        </select>
-
-        <label htmlFor="day">
-          Day:
-            </label>
-        <select
-          name="day"
-          onChange={handleChange}
-          value={eventRecord.day}>
-          {availDays}
-        </select>
-
-        <label htmlFor="hour">
-          Hour:
-            </label>
-        <select
-          name="hour"
-          onChange={handleChange}
-          value={eventRecord.hour}>
-          {availHours}
-        </select>
-
-        <label htmlFor="minute">
-          Minute:
-            </label>
-        <select
-          name="minute"
-          onChange={handleChange}
-          value={eventRecord.minute}>
-          {availMinutes}
-        </select>
-
-        <label htmlFor="duration">
-          Duration:
-            </label>
-        <select
-          name="duration"
-          onChange={handleChange}
-          value={eventRecord.duration}>
-          {availDurations}
-        </select>
-
-        <div className="button-group">
-          <button className="button" onClick={clearForm}>
-            Clear
-          </button>
-          <input className="button" type="submit" value="Submit" />
-        </div>
-      </form>
-    </div>
-  )
+    <Grid container
+      alignItems="center"
+      justify="center"
+    >
+      <Grid item xs={10} sm={8}>
+        <ThemeProvider theme={theme}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <ErrorList errors={errors} />
+            <form className={classes.root} onSubmit={onSubmitHandler}>
+              <Grid container spacing={3}
+                direction="row"
+                justify="center"
+                alignItems="center"
+              >
+                <Grid item xs={12} className={classes.formTitle}>
+                  Submit a New Event!
+              </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <TextField
+                    className={classes.formInput}
+                    required
+                    name="name"
+                    id="outlined-name"
+                    label="Name"
+                    value={eventRecord.name}
+                    variant="outlined"
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <TextField
+                    required
+                    className={classes.formInput}
+                    name="description"
+                    id="outlined-description"
+                    label="Description"
+                    value={eventRecord.description}
+                    variant="outlined"
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <TextField
+                    className={classes.formInput}
+                    id="outlined-location"
+                    name="location"
+                    label="Location"
+                    type="text"
+                    value={eventRecord.location}
+                    variant="outlined"
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <TextField
+                    className={classes.formInput}
+                    id="outlined-select-currency"
+                    select
+                    name='eventTypeId'
+                    label="Select"
+                    value={eventRecord.eventTypeId}
+                    onChange={handleChange}
+                    variant="outlined"
+                  >
+                    {eventTypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                  {specialFields}
+                </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <DateTimePicker
+                    required
+                    className={classes.formInput}
+                    label="Start Date and Time"
+                    inputVariant="outlined"
+                    value={eventRecord.startDate}
+                    onChange={handleStartDateChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <DateTimePicker
+                    required
+                    className={classes.formInput}
+                    label="End Date and Time"
+                    inputVariant="outlined"
+                    value={eventRecord.endDate}
+                    onChange={handleEndDateChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <TextField
+                    id="outlined-meetUrl"
+                    className={classes.formInput}
+                    name="meetUrl"
+                    label="Zoom/Hangouts URL"
+                    type="text"
+                    value={eventRecord.meetUrl}
+                    variant="outlined"
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={3} md={3}>
+                  <Button variant="contained" color="secondary" type="submit">
+                    Submit</Button>
+                </Grid>
+                <Grid item xs={6} sm={3} md={3}>
+                  <Button variant="contained" color="primary" onClick={clearForm}>
+                    Clear</Button>
+                </Grid>
+              </Grid>
+            </form>
+          </MuiPickersUtilsProvider>
+        </ThemeProvider>
+      </Grid>
+    </Grid>
+  );
 }
+
 
 export default NewEventForm

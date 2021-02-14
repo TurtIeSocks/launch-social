@@ -137,7 +137,6 @@ const NewEventForm = props => {
         [event.currentTarget.name]: event.currentTarget.value,
       })
     } else {
-      console.log(event.target.value)
       setEventRecord({
         ...eventRecord,
         eventTypeId: event.target.value,

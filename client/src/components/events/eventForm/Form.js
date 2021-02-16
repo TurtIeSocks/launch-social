@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Redirect } from "react-router-dom"
-import translateServerErrors from "../../services/translateServerErrors.js"
-import ErrorList from "../ErrorList.js"
+import React from 'react'
+import ErrorList from "../../ErrorList.js"
 
 import { Grid, TextField, Button, MenuItem } from '@material-ui/core'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
@@ -53,155 +51,22 @@ const theme = createMuiTheme({
     }
   }
 });
-const currentDate = new Date
 
-const NewEventForm = props => {
+const EventForm = ({
+  eventRecord,
+  eventTypes,
+  onSubmitHandler,
+  handleStartDateChange,
+  handleEndDateChange,
+  handleChange,
+  handleInputChange,
+  handleGameDetailsChange,
+  clearForm,
+  loadGames,
+  errors,
+  formName
+}) => {
   const classes = useStyles();
-  const [inputValue, setInputValue] = useState(null)
-  const [eventTypes, setEventTypes] = useState([])
-  const [errors, setErrors] = useState([])
-  const [shouldRedirect, setShouldRedirect] = useState(false)
-  const [eventRecord, setEventRecord] = useState({
-    name: "",
-    description: "",
-    location: "",
-    url: "",
-    meetUrl: "",
-    imageUrl: "",
-    eventTypeId: "",
-    gameDetails: { id: 0, name: 'Search for the game you want to play...' },
-    studyTopic: "",
-    otherType: "",
-    startDate: currentDate.getTime(),
-    endDate: currentDate.getTime(),
-    repeats: "false",
-    alerts: "false",
-  })
-
-  const fetchGamesAndEventTypes = async () => {
-    try {
-      const response = await fetch(`/api/v1/basics`)
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      const eventTypes = body.eventTypes.map(eventType => {
-        return { key: eventType.id, label: eventType.name, value: eventType.id }
-      })
-      setEventTypes([{ key: 0, label: "Select One", value: 0 }, ...eventTypes])
-    } catch (error) {
-      console.error(error.message)
-    }
-  }
-
-  const loadOptions = (inputValue) => {
-    return fetch(`/api/v1/games/names?search=${inputValue}`).then(res => res.json())
-  };
-
-  const addNewEvent = async (eventPayload) => {
-    try {
-      const response = await fetch(`/api/v1/events/`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(eventPayload),
-      })
-      if (!response.ok) {
-        if (response.status === 422) {
-          const body = await response.json()
-          const newErrors = translateServerErrors(body.errors)
-          setErrors(newErrors)
-        } else {
-          const errorMessage = `${response.status} (${response.statusText})`
-          const error = new Error(errorMessage)
-          throw error
-        }
-      } else {
-        setErrors([])
-        setShouldRedirect(true)
-      }
-    } catch (error) {
-      console.error(`Error in fetch: ${error.message}`)
-    }
-  }
-
-  useEffect(() => {
-    fetchGamesAndEventTypes()
-  }, [])
-
-  const handleChange = (event) => {
-    if (event.currentTarget.name) {
-      setEventRecord({
-        ...eventRecord,
-        [event.currentTarget.name]: event.currentTarget.value,
-      })
-    } else {
-      setEventRecord({
-        ...eventRecord,
-        eventTypeId: event.target.value,
-      })
-    }
-  }
-
-  const handleStartDateChange = (date) => {
-    setEventRecord({
-      ...eventRecord,
-      startDate: date.getTime(),
-    })
-  };
-
-  const handleEndDateChange = (date) => {
-    setEventRecord({
-      ...eventRecord,
-      endDate: date.getTime(),
-    })
-  };
-
-  const handleInputChange = value => {
-    setInputValue(value)
-  };
-
-  const handleGameDetailsChange = value => {
-    setEventRecord({
-      ...eventRecord,
-      gameDetails: value
-    })
-  }
-
-  const fieldReset = () => {
-    setEventRecord({
-      name: "",
-      description: "",
-      location: "",
-      url: "",
-      meetUrl: "",
-      imageUrl: "",
-      eventTypeId: 0,
-      gameDetails: { id: 0, name: 'Search for the game you want to play...' },
-      studyTopic: "",
-      otherType: "",
-      startDate: new Date,
-      endDate: new Date,
-      repeats: "",
-      alerts: "",
-    })
-  }
-
-  const clearForm = (event) => {
-    event.preventDefault()
-    fieldReset()
-  }
-
-  const onSubmitHandler = (event) => {
-    event.preventDefault()
-    addNewEvent(eventRecord)
-    fieldReset()
-  }
-
-  if (shouldRedirect) {
-    return <Redirect to="/" />
-  }
 
   let specialFields = ''
   if (eventRecord.eventTypeId == 1) {
@@ -214,7 +79,7 @@ const NewEventForm = props => {
         cacheOptions
         getOptionLabel={e => e.name}
         getOptionValue={e => e.id}
-        loadOptions={loadOptions}
+        loadOptions={loadGames}
         onInputChange={handleInputChange}
         onChange={handleGameDetailsChange}
       />
@@ -261,7 +126,7 @@ const NewEventForm = props => {
                 alignItems="center"
               >
                 <Grid item xs={12} className={classes.formTitle}>
-                  Submit a New Event!
+                  {formName}
               </Grid>
                 <Grid item xs={12} sm={6} md={6}>
                   <TextField
@@ -369,5 +234,4 @@ const NewEventForm = props => {
   );
 }
 
-
-export default NewEventForm
+export default EventForm

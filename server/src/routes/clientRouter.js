@@ -8,7 +8,9 @@ const clientRoutes = [
   "/events/:id",
   "/user-profile",
   "/auth/github",
-  "/new-event"
+  "/new-event",
+  "/events/:id/edit",
+  "/events/:id/delete"
 ];
 router.get(clientRoutes, (req, res) => {
   res.sendFile(getClientIndexPath());

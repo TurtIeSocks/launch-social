@@ -11,7 +11,7 @@ class User extends Model {
     const { Event, Interest } = require('./index.js')
 
     return {
-      events: {
+      createdEvents: {
         relation: Model.HasManyRelation,
         modelClass: Event,
         join: {
@@ -19,7 +19,7 @@ class User extends Model {
           to: 'events.userId'
         }
       },
-      interests: {
+      interestedEvents: {
         relation: Model.ManyToManyRelation,
         modelClass: Event,
         join: {
@@ -31,7 +31,7 @@ class User extends Model {
           to: 'events.id'
         }
       },
-      interest: {
+      interests: {
         relation: Model.HasManyRelation,
         modelClass: Interest,
         join: {

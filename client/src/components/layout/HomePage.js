@@ -51,7 +51,7 @@ const HomePage = props => {
 
   const allEvents = events.map(event => {
     return (
-      <Grid item xs={12} key={event.id}>
+      <Grid item xs={12} sm={11} md={9} lg={7} key={event.id}>
         <EventTileLogic
           event={event}
           user={props.user}
@@ -62,27 +62,12 @@ const HomePage = props => {
 
   return (
     <div className={classes.root} >
-      <Grid container spacing={2}>
-        <Grid container item xs={12} sm={9} spacing={2}>
-          {allEvents}
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="date-picker-inline"
-              label="Date picker inline"
-              value={selectedDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-          </MuiPickersUtilsProvider>
-        </Grid>
+      <Grid container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={2}>
+        {allEvents}
       </Grid>
     </div>
   )

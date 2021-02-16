@@ -2,9 +2,14 @@ import { connection } from "../boot.js"
 import EventTypesSeeder from './seeders/EventTypesSeeder.js' 
 import GameSeeder from "./seeders/GameSeeder.js"
 import EventSeeder from "./seeders/EventSeeder.js"
+import UserSeeder from "./seeders/UserSeeder.js"
+import InterestSeeder from "./seeders/InterestSeeder.js"
 
 class Seeder {
   static async seed() {
+
+    console.log("seeding users")
+    await UserSeeder.seed()
 
     console.log("seeding event types")
     await EventTypesSeeder.seed()
@@ -14,6 +19,9 @@ class Seeder {
 
     console.log('seeding events')
     await EventSeeder.seed()
+
+    console.log("seeding interests")
+    await InterestSeeder.seed()
     
     console.log("Done!")
     await connection.destroy()

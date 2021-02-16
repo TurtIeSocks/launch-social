@@ -58,7 +58,7 @@ class Event extends Model {
         join: {
           from: 'events.id',
           through: {
-            from: 'interests.eventsId',
+            from: 'interests.eventId',
             to: 'interests.userId'
           },
           to: 'users.id'

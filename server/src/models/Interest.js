@@ -22,7 +22,7 @@ class Interest extends Model {
         modelClass: User,
         join: {
           from: 'interests.userId',
-          to: 'user.id'
+          to: 'users.id'
         }
       }
     }

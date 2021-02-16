@@ -1,12 +1,10 @@
-import { Event, User } from "../../models/index.js"
+import { Event } from "../../models/index.js"
 
 class EventSeeder {
   static async seed() {
 
-    const user1 = await User.query().insert({ githubId: 11111, username: 'admin', accessToken: '55555555', profileUrl: 'https://www.github.com/admin', avatarUrl: 'https://www.clipartmax.com/png/middle/319-3191274_male-avatar-admin-profile.png' })
-
     await Event.query().insert({
-      userId: user1.id,
+      userId: 1,
       name: 'Solo Gaming Party',
       description: 'Great time playing a controversial game',
       location: 'My Room',
@@ -21,7 +19,7 @@ class EventSeeder {
     })
 
     await Event.query().insert({
-      userId: user1.id,
+      userId: 2,
       name: 'Halo LAN Party Baby',
       description: 'Old school vibes. Halo LAN party, yeah!',
       location: 'Launch Pad',
@@ -36,7 +34,7 @@ class EventSeeder {
     })
 
     await Event.query().insert({
-      userId: user1.id,
+      userId: 3,
       name: 'A Holiday Trip to an Island Far Far Away',
       description: 'Come enjoy a relaxing evening on a boutique island with your favorite animal friends.',
       location: 'Nook Island',
@@ -51,7 +49,7 @@ class EventSeeder {
     })
 
     await Event.query().insert({
-      userId: user1.id,
+      userId: 4,
       name: 'Suuuuuuper Maaaaaaaario Bros 2',
       description: 'Old school vibes playing a classic',
       location: '1990',
@@ -66,7 +64,7 @@ class EventSeeder {
     })
 
     await Event.query().insert({
-      userId: user1.id,
+      userId: 5,
       name: 'Come explore the land of Hyrule',
       description: 'Climb mountains, swim across lakes, explore spooky forests, oh boy!',
       location: 'Home',
@@ -81,7 +79,7 @@ class EventSeeder {
     })
 
     await Event.query().insert({
-      userId: user1.id,
+      userId: 1,
       name: 'No, YOU\'RE SUS',
       description: 'Online classic',
       location: 'Wherever',
@@ -95,8 +93,8 @@ class EventSeeder {
       alerts: false
     })
 
-    await Event.query().insert({
-      userId: user1.id,
+    const event7 = await Event.query().insert({
+      userId: 2,
       name: 'Get Ready To Be Toxic',
       description: 'We\'re getting too comfortable with each other, lets increase the toxicity',
       location: 'Launch Academy',
@@ -111,7 +109,7 @@ class EventSeeder {
     })
 
     await Event.query().insert({
-      userId: user1.id,
+      userId: 3,
       name: 'Lets Beat Up Some Kids',
       description: 'You know you want to',
       location: 'Boston Common',
@@ -126,7 +124,7 @@ class EventSeeder {
     })
 
     await Event.query().insert({
-      userId: user1.id,
+      userId: 4,
       name: 'Yo, the classic, lets mine some blocks',
       description: 'Bring snacks, it\'s going to be a long night',
       location: 'Mom\'s basement',
@@ -140,9 +138,8 @@ class EventSeeder {
       alerts: false
     })
 
-
     await Event.query().insert({
-      userId: user1.id,
+      userId: 5,
       name: 'Just do it',
       description: 'No micro-transactions, kind of fun, always a classic',
       location: '32B',

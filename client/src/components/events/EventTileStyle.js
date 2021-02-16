@@ -67,7 +67,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   }
 }));
 
-const EventTileStyle = ({ event, user, interested, attending }) => {
+const EventTileStyle = ({ event, interested, attending }) => {
   const styles = useStyles();
   const gutterStyles = usePushingGutterStyles({ space: 1.5 });
   const labelStyles = useLabelIconStyles({ linked: true });

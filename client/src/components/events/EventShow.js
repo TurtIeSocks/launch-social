@@ -4,6 +4,7 @@ import { makeStyles, createMuiTheme, ThemeProvider, responsiveFontSizes } from '
 import { Grid, Divider, Typography, Button } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
 import ReactPlayer from 'react-player'
+import { Delete, Edit } from '@material-ui/icons/';
 
 let theme = createMuiTheme({
   palette: {
@@ -283,13 +284,11 @@ const EventShow = props => {
     editButton =
 
       <Link to={`/events/${event.id}/edit`} >
-        <Button size='small' variant="contained" color="secondary">
-          Edit</Button>
+        <Edit fontSize='large' color='secondary'/>
       </Link>
     deleteButton =
       <Link to={`/events/${event.id}/delete`}>
-        <Button size='small' variant="contained" color="primary">
-          Delete</Button>
+        <Delete fontSize='large' color='primary'/>
       </Link>
   }
 
@@ -307,11 +306,11 @@ const EventShow = props => {
         justify="space-evenly"
         alignItems="center"
         className={classes.root}>
-        <Grid item xs={12} sm={2}>
+        <Grid item xs={12} sm={1}>
           <div className={classes.buttons}>{editButton}</div>
           <div className={classes.buttons}>{deleteButton}</div>
         </Grid>
-        <Grid item xs={8} sm={7} >
+        <Grid item xs={8} sm={8} >
           <Typography variant='h2' className={classes.title}>{event.name}</Typography>
         </Grid>
         <Grid item xs={4} sm={3}>

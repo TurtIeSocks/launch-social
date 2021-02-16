@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { AppBar, Toolbar, ThemeProvider, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { AccountCircle, Create } from '@material-ui/icons/';
+import { AccountCircle, AddBox } from '@material-ui/icons/';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    color: 'white'
+    color: 'white',
   },
   avatar: {
     maxWidth: 30,
@@ -75,7 +75,14 @@ const TopBar = ({ user }) => {
               <Link to="/" className={classes.link}><img className={classes.logo} src='https://i.imgur.com/hAOtbjn.png' />&nbsp;Launch Social</Link>
             </Typography>
             <Typography variant="h6" className={classes.title}>
-              <Link to="/new-event" className={classes.link}><Create />Add an Event</Link>
+              {user ?
+                <Link to="/new-event" className={classes.link}>
+                  <AddBox />&nbsp;Add an Event
+                </Link> :
+                <a href="/auth/github">
+                  <AddBox />&nbsp;Add an Event
+                </a>
+              }
             </Typography>
             {user && (
               <div>

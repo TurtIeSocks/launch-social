@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { hot } from "react-hot-loader/root";
-
-import getCurrentUser from "../services/getCurrentUser";
-import "../assets/scss/main.scss";
-import TopBar from "./layout/TopBar";
-import UserProfile from './authentication/UserProfile.js'
-import HomePage from './layout/HomePage.js'
-import NewEventForm from "./events/NewEventForm.js";
-import EventShow from "./events/EventShow.js";
 import AuthenticatedRoute from "./authentication/AuthenticatedRoute";
+
+import "../assets/scss/main.scss";
+import getCurrentUser from "../services/getCurrentUser";
+import TopBar from "./layout/TopBar";
+import HomePage from './layout/HomePage.js'
+import UserProfile from './authentication/UserProfile.js'
+import NewEvent from "./events/eventForm/New.js";
+import EditEvent from './events/eventForm/Edit.js'
+import DeleteEvent from './events/eventForm/Delete.js'
+import EventShow from "./events/EventShow.js";
 
 const App = (props) => {
   const [currentUser, setCurrentUser] = useState(undefined)
@@ -40,7 +42,9 @@ const App = (props) => {
         <Route exact path="/events/:id">
           <EventShow user={currentUser} />
         </Route>
-        <AuthenticatedRoute exact path="/new-event" component={NewEventForm} user={currentUser}/>
+        <AuthenticatedRoute exact path="/new-event" component={NewEvent} user={currentUser} />
+        <Route exact path='/events/:id/edit' component={EditEvent} />
+        <Route exact path='/events/:id/delete' component={DeleteEvent} />
       </Switch>
     </Router>
   );

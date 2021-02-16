@@ -1,6 +1,6 @@
 class GameSerializer {
   static async getOne(game) {
-    const allowedAttributes = ["name", "summary", "maxPlayers", "coverArt", "url"]
+    const allowedAttributes = ["apiId","name", "summary", "maxPlayers", "coverArt", "url"]
 
     const serializedGame = {}
 

@@ -1,36 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import EventTileLogic from '../events/EventTileLogic.js'
+import EventTile from '../eventTile/Logic.js'
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
+import useStyles from './styling.js'
 
 const HomePage = props => {
   const classes = useStyles()
-  const [value, setValue] = useState(null);
   const [events, setEvents] = useState([])
-  const [games, setGames] = useState([])
-  const [selectedDate, setSelectedDate] = useState(new Date);
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
 
   const fetchEvents = async () => {
     try {
@@ -52,7 +27,7 @@ const HomePage = props => {
   const allEvents = events.map(event => {
     return (
       <Grid item xs={12} sm={11} md={9} lg={7} key={event.id}>
-        <EventTileLogic
+        <EventTile
           event={event}
           user={props.user}
         />

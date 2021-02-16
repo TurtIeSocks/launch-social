@@ -8,10 +8,10 @@ import getCurrentUser from "../services/getCurrentUser";
 import TopBar from "./layout/TopBar";
 import HomePage from './layout/HomePage.js'
 import UserProfile from './authentication/UserProfile.js'
-import NewEvent from "./events/eventForm/New.js";
-import EditEvent from './events/eventForm/Edit.js'
-import DeleteEvent from './events/eventForm/Delete.js'
-import EventShow from "./events/EventShow.js";
+import NewEvent from "./eventForm/New.js";
+import EditEvent from './eventForm/Edit.js'
+import DeleteEvent from './eventForm/Delete.js'
+import EventShow from "./eventShow/Logic.js";
 
 const App = (props) => {
   const [currentUser, setCurrentUser] = useState(undefined)

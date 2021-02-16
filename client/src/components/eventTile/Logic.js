@@ -1,26 +1,9 @@
 import { Button, ThemeProvider } from "@material-ui/core"
 import React, { useState, useEffect } from "react"
-import EventTileStyle from './EventTileStyle'
-import { createMuiTheme } from '@material-ui/core/styles'
+import Tile from './Tile'
+import theme from '../mui/theme.js' 
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#ED1A7A',
-      main: '#ED1A7A',
-      dark: '#ED1A7A',
-      contrastText: '#000',
-    },
-    secondary: {
-      light: '#49AEB9',
-      main: '#49AEB9',
-      dark: '#49AEB9',
-      contrastText: '#fff',
-    }
-  }
-});
-
-const EventTileLogic = ({ event, user }) => {
+const TileLogic = ({ event, user }) => {
   const [userInterests, setUserInterests] = useState({
     isAttending: false,
     isInterested: false
@@ -143,16 +126,26 @@ const EventTileLogic = ({ event, user }) => {
   if (user !== null) {
     attendingButton =
       <ThemeProvider theme={theme}>
-          <Button color={upVoteButtonClass} onClick={isAttendingClickHandler}>Attending: {totalInterests.attending}</Button>
+        <Button
+          color={upVoteButtonClass}
+          onClick={isAttendingClickHandler} 
+          variant='outlined'>
+          Attending: {totalInterests.attending}
+        </Button>
       </ThemeProvider>
     interestedButton =
       <ThemeProvider theme={theme}>
-          <Button color={downVoteButtonClass} onClick={isInterestedClickHandler}>Interested: {totalInterests.interested}</Button>
+        <Button
+          color={downVoteButtonClass}
+          onClick={isInterestedClickHandler} 
+          variant='outlined'>
+          Interested: {totalInterests.interested}
+        </Button>
       </ThemeProvider>
   }
 
   return (
-    <EventTileStyle
+    <Tile
       event={event}
       user={user}
       attending={attendingButton}
@@ -161,4 +154,4 @@ const EventTileLogic = ({ event, user }) => {
   )
 }
 
-export default EventTileLogic
+export default TileLogic

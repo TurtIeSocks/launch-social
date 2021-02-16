@@ -1,56 +1,14 @@
 import React from 'react'
-import ErrorList from "../../ErrorList.js"
+import ErrorList from "../ErrorList.js"
+import theme from '../mui/theme.js' 
+import useStyles from './styling.js'
 
 import { Grid, TextField, Button, MenuItem } from '@material-ui/core'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/core/styles'
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 
 import DateFnsUtils from '@date-io/date-fns'
 import AsyncSelect from 'react-select/async'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(2),
-    },
-    flexGrow: 1,
-    marginTop: theme.spacing(3),
-    backgroundColor: '#EEEEEE',
-    border: 'solid 5px #ED1A7A',
-    borderRadius: theme.spacing(4),
-    textAlign: 'center',
-    padding: theme.spacing(3),
-    color: '#33485E',
-  },
-  formTitle: {
-    fontWeight: 'bold',
-    fontSize: '5vw',
-  },
-  formInput: {
-    width: '80%',
-    textAlign: 'center',
-  },
-  longFormInput: {
-    width: '90%'
-  }
-}));
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#ED1A7A',
-      main: '#ED1A7A',
-      dark: '#ED1A7A',
-      contrastText: '#000',
-    },
-    secondary: {
-      light: '#49AEB9',
-      main: '#49AEB9',
-      dark: '#49AEB9',
-      contrastText: '#fff',
-    }
-  }
-});
 
 const EventForm = ({
   eventRecord,

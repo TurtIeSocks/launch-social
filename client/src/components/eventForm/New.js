@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Redirect } from "react-router-dom"
-import translateServerErrors from "../../../services/translateServerErrors.js"
+import translateServerErrors from "../../services/translateServerErrors.js"
 import Logic from './Logic.js'
 
 const currentDate = new Date

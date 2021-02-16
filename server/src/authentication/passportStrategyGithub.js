@@ -22,5 +22,5 @@ const authHandler = async (accessToken, refreshToken, profile, done) => {
 export default new GitHubStrategy({
   clientID: configuration.clientId,
   clientSecret: configuration.clientSecret,
-  callbackURL: "http://localhost:3000/auth/github/callback"
+  callbackURL: configuration.gitHubCallBackUrl
 }, authHandler)

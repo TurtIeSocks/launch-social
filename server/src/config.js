@@ -7,6 +7,7 @@ export default {
   session: { secret: process.env.SESSION_SECRET },
   clientId: process.env.gitHubID,
   clientSecret: process.env.gitHubClientSecret,
+  gitHubCallBackUrl: process.env.gitHubCallBackUrl,
   twitchId: process.env.twitchId,
   twitchToken: process.env.twitchToken,
   databaseUrl: getDatabaseUrl(getNodeEnv()),

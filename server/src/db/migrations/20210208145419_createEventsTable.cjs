@@ -43,8 +43,8 @@ exports.up = async (knex) => {
     table.integer('duration').notNullable()
     table.boolean('repeats').notNullable()
     table.boolean('alerts').notNullable()
-    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
+    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
+    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
 }
 

@@ -14,8 +14,8 @@ exports.up = async (knex) => {
     table.integer('maxPlayers')
     table.string('coverArt')
     table.string('url')
-    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
+    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
+    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
 }
 

@@ -19,7 +19,7 @@ exports.down = (knex) => {
     table.string('short').notNullable()
     table.integer('numOfDays').notNullable()
     table.integer('jsValue').notNullable()
-    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
+    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
+    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
 }

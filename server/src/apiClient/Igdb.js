@@ -11,14 +11,14 @@ class Igdb {
         'Client-ID': config.twitchId,
         'Authorization': `Bearer ${config.twitchToken}`,
       },
-      data: `search "${search}"; fields name,summary,url,multiplayer_modes.onlinemax,cover.image_id,screenshots.image_id,videos.video_id,platforms.name,platforms.platform_logo.image_id;`
+      data: `search "${search}" fields name,summary,url,multiplayer_modes.onlinemax,cover.image_id,screenshots.image_id,videos.video_id,platforms.name,platforms.platform_logo.image_id`
     })
       .then(response => {
         return response.data
       })
       .catch(err => {
-        console.error(err);
-      });
+        console.error(err)
+      })
     return apiResponse
   }
 
@@ -31,14 +31,14 @@ class Igdb {
         'Client-ID': config.twitchId,
         'Authorization': `Bearer ${config.twitchToken}`,
       },
-      data: `fields name,summary,url,multiplayer_modes.onlinemax,cover.image_id,screenshots.image_id,videos.video_id,platforms.name,platforms.platform_logo.image_id; where id = ${gameId};`
+      data: `fields name,summary,url,multiplayer_modes.onlinemax,cover.image_id,screenshots.image_id,videos.video_id,platforms.name,platforms.platform_logo.image_id where id = ${gameId}`
     })
       .then(response => {
         return response.data
       })
       .catch(err => {
-        console.error(err);
-      });
+        console.error(err)
+      })
     return apiResponse
   }
 }

@@ -18,7 +18,7 @@ exports.down = (knex) => {
     table.bigIncrements('id')
     table.integer('year').notNullable().unique()
     table.boolean('leapYear').notNullable()
-    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
+    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
+    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
 }

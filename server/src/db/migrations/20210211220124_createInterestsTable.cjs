@@ -11,8 +11,8 @@ exports.up = async (knex) => {
     table.bigInteger('eventId')
     table.bigInteger('userId')
     table.string('value')
-    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());  
+    table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
+    table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())  
   })
 }
 

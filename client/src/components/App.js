@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { hot } from "react-hot-loader/root";
-import AuthenticatedRoute from "./authentication/AuthenticatedRoute";
+import React, { useState, useEffect } from "react"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { hot } from "react-hot-loader/root"
+import AuthenticatedRoute from "./authentication/AuthenticatedRoute"
 
-import "../assets/scss/main.scss";
-import getCurrentUser from "../services/getCurrentUser";
-import TopBar from "./layout/TopBar";
+import "../assets/scss/main.scss"
+import getCurrentUser from "../services/getCurrentUser"
+import TopBar from "./layout/TopBar"
 import HomePage from './layout/HomePage.js'
 import UserProfile from './authentication/UserProfile.js'
-import NewEvent from "./eventForm/New.js";
+import NewEvent from "./eventForm/New.js"
 import EditEvent from './eventForm/Edit.js'
 import DeleteEvent from './eventForm/Delete.js'
-import EventShow from "./eventShow/Logic.js";
+import EventShow from "./eventShow/Logic.js"
 
 const App = (props) => {
   const [currentUser, setCurrentUser] = useState(undefined)
@@ -47,7 +47,7 @@ const App = (props) => {
         <Route exact path='/events/:id/delete' component={DeleteEvent} />
       </Switch>
     </Router>
-  );
-};
+  )
+}
 
-export default hot(App);
+export default hot(App)

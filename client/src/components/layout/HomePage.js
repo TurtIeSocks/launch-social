@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import EventTile from '../eventTile/Logic.js'
-import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid'
 import useStyles from './styling.js'
 
 const HomePage = props => {

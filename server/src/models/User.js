@@ -1,10 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-const Model = require("./Model");
+const Model = require("./Model")
 
 class User extends Model {
   static get tableName() {
-    return "users";
+    return "users"
   }
 
   static get relationMappings() {
@@ -43,4 +43,4 @@ class User extends Model {
   }
 }
 
-module.exports = User;
+module.exports = User

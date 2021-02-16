@@ -1,6 +1,6 @@
 import { Strategy as GitHubStrategy } from 'passport-github2'
-import { User } from "../models/index.js";
-import configuration from "../config.js";
+import { User } from "../models/index.js"
+import configuration from "../config.js"
 
 const authHandler = async (accessToken, refreshToken, profile, done) => {
   const { id, username, profileUrl, photos } = profile

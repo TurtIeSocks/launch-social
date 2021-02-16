@@ -6,4 +6,4 @@ module.exports = {
   transform: {
     "^.+\\.c?[t|j]sx?$": "babel-jest"
   }
-};
+}

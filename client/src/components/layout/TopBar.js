@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
-import { AppBar, Toolbar, ThemeProvider, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { AccountCircle, AddBox } from '@material-ui/icons/';
+import React, { useState } from 'react'
+import { Link } from "react-router-dom"
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
+import { AppBar, Toolbar, ThemeProvider, Typography, IconButton, Menu, MenuItem } from '@material-ui/core'
+import { AccountCircle, AddBox } from '@material-ui/icons/'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: 'white'
   }
-}));
+}))
 
 const theme = createMuiTheme({
   palette: {
@@ -49,20 +49,20 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     }
   }
-});
+})
 
 const TopBar = ({ user }) => {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const classes = useStyles()
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
 
   const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   return (
     <div className={classes.root}>
@@ -128,7 +128,7 @@ const TopBar = ({ user }) => {
         </AppBar>
       </ThemeProvider>
     </div>
-  );
+  )
 }
 
 export default TopBar

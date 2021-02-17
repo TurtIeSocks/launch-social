@@ -5,11 +5,26 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     flexGrow: 1,
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+  topBar: {
+    flexGrow: 1,
+    color: 'white'
   },
+  avatar: {
+    maxWidth: 20,
+    maxHeight: 20,
+    borderRadius: 10
+  },
+  logo: {
+    margin: theme.spacing(1),
+    width: 65
+  },
+  link: {
+    color: 'white',
+    textAlign: 'center'
+  },
+  add: {
+    paddingTop: theme.spacing(1)
+  }
 }));
 
 export default useStyles

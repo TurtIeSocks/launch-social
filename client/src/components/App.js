@@ -36,9 +36,9 @@ const App = (props) => {
         <Route exact path="/">
           <HomePage user={currentUser} />
         </Route>
-        <AuthenticatedRoute exact path="/user-profile">
+        <Route exact path="/user-profile">
           <UserProfile user={currentUser} />
-        </AuthenticatedRoute>
+        </Route>
         <Route exact path="/events/:id">
           <EventShow user={currentUser} />
         </Route>

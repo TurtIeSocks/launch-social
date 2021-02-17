@@ -1,12 +1,14 @@
 import GameSerializer from "./GameSerializer.js"
 import EventTypeSerializer from "./EventTypeSerializer.js"
-import { Interest } from '../models/index.js'
 import InterestSerializer from "./InterestSerializer.js"
 import UserSerializer from "./UserSerializer.js"
+import StudyTopicSerializer from './StudyTopicSerializer.js' 
+
+import { Interest } from '../models/index.js'
 
 class EventSerializer {
   static async getOne(event) {
-    const allowedAttributes = ["id", "userId", "name", "description", "location", "meetUrl", "studyTopic", "startDate", "endDate", "repeats", "alerts"]
+    const allowedAttributes = ["id", "userId", "name", "description", "location", "meetUrl", "startDate", "endDate", "repeats", "alerts"]
 
     const serializedEvent = {}
 
@@ -23,6 +25,9 @@ class EventSerializer {
     if (serializedEvent.eventType.id == 1) {
       const game = await event.$relatedQuery('game')
       serializedEvent.gameDetails = await GameSerializer.getOne(game)
+    } else if (serializedEvent.eventType.id == 2) {
+      const studyTopic = await event.$relatedQuery('studyTopic')
+      serializedEvent.studyTopic = await StudyTopicSerializer.getOne(studyTopic)
     }
 
     const userInterests = await event.$relatedQuery('interests')

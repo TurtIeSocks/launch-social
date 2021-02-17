@@ -121,6 +121,25 @@ const TileLogic = ({ event, user }) => {
     }
   }
 
+  const getThumbnail = (event) => {
+    let thumbnail = 'https://image.freepik.com/free-vector/hand-with-pen-mark-calendar_1325-126.jpg'
+    if (event.gameDetails) {
+      thumbnail = `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.gameDetails.coverArt}.jpg`
+    } else if (event.studyTopic) {
+      thumbnail = event.studyTopic.imageUrl
+    }
+    return thumbnail
+  }
+
+  const convertDate = (epochTime) => {
+    const date = new Date(parseInt(epochTime))
+    const dayOfWeek = date.toLocaleDateString('default', { weekday: 'short' })
+    const month = date.toLocaleDateString('default', { month: 'short' })
+    const day = date.getDate()
+    const time = date.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+    return `${dayOfWeek} ${month} ${day} ${time}`
+  }
+
   let attendingButton = ''
   let interestedButton = ''
   if (user !== null) {
@@ -129,7 +148,8 @@ const TileLogic = ({ event, user }) => {
         <Button
           color={upVoteButtonClass}
           onClick={isAttendingClickHandler} 
-          variant='outlined'>
+          variant='contained'
+          size='small'>
           Attending: {totalInterests.attending}
         </Button>
       </ThemeProvider>
@@ -138,7 +158,8 @@ const TileLogic = ({ event, user }) => {
         <Button
           color={downVoteButtonClass}
           onClick={isInterestedClickHandler} 
-          variant='outlined'>
+          variant='contained'
+          size='small'>
           Interested: {totalInterests.interested}
         </Button>
       </ThemeProvider>
@@ -150,6 +171,8 @@ const TileLogic = ({ event, user }) => {
       user={user}
       attending={attendingButton}
       interested={interestedButton}
+      getThumbnail={getThumbnail}
+      convertDate={convertDate}
     />
   )
 }

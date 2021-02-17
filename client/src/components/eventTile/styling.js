@@ -18,10 +18,10 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     verticalAlign: 'text-top',
   },
   content: {
-    padding: spacing(0, 2, 0, 2),
+    padding: spacing(0, 2, 0, 2)
   },
   heading: {
-    fontSize: '2.5vw',
+    fontSize: 20,
     fontWeight: 'bold',
     letterSpacing: '0.5px',
     color: 'rgb(235,35,122)',
@@ -30,7 +30,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     display: 'inline-block',
   },
   date: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 'light',
     letterSpacing: '0.5px',
     color: 'rgb(51,72,94)',
@@ -53,8 +53,18 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     verticalAlign: 'bottom',
   },
   avatar: {
-    maxWidth: 30,
-    maxHeight: 30
+    maxWidth: 20,
+    maxHeight: 20
+  },
+  buttons: {
+    textAlign: 'center'
+  },
+  username: {
+    fontSize: 14,
+    color: palette.grey[500],
+  },
+  eventDetails: {
+    fontSize: 14
   }
 }));
 

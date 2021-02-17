@@ -7,5 +7,6 @@ const GameImage = require('./games/GameImage.js')
 const GameVideo = require('./games/GameVideo.js')
 const GamePlatform = require('./games/GamePlatform.js')
 const Interest = require('./Interest.js')
+const StudyTopic = require('./StudyTopic.js')
 
-module.exports = { User, Event, EventType, Game, GameImage, GameVideo, GamePlatform, Interest }
+module.exports = { User, Event, EventType, Game, GameImage, GameVideo, GamePlatform, Interest, StudyTopic }

@@ -4,6 +4,7 @@ import GameSeeder from "./seeders/GameSeeder.js"
 import EventSeeder from "./seeders/EventSeeder.js"
 import UserSeeder from "./seeders/UserSeeder.js"
 import InterestSeeder from "./seeders/InterestSeeder.js"
+import StudyTopicSeeder from "./seeders/StudyTopicsSeeder.js"
 
 class Seeder {
   static async seed() {
@@ -16,6 +17,9 @@ class Seeder {
 
     console.log("seeding games... (this might take a bit)")
     await GameSeeder.seed() 
+
+    console.log('seeding study topics')
+    await StudyTopicSeeder.seed()
 
     console.log('seeding events')
     await EventSeeder.seed()

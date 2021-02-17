@@ -10,8 +10,9 @@ const FormLogic = ({
   formName }) => {
   const [inputValue, setInputValue] = useState(null)
   const [eventTypes, setEventTypes] = useState([])
+  const [studyTopics, setStudyTopics] = useState([])
 
-  const fetchEventTypes = async () => {
+  const fetchTypesAndTopics = async () => {
     try {
       const response = await fetch(`/api/v1/basics`)
       if (!response.ok) {
@@ -22,6 +23,14 @@ const FormLogic = ({
         return { key: eventType.id, label: eventType.name, value: eventType.id }
       })
       setEventTypes([{ key: 0, label: "Select One", value: 0 }, ...eventTypes])
+
+      const studyTopics = body.studyTopics.map(topic => {
+        return {
+          label: topic.name,
+          value: topic.id
+        }
+      })
+      setStudyTopics(studyTopics)
     } catch (error) {
       console.error(error.message)
     }
@@ -32,7 +41,7 @@ const FormLogic = ({
   };
 
   useEffect(() => {
-    fetchEventTypes()
+    fetchTypesAndTopics()
   }, [])
 
   const handleChange = (event) => {
@@ -74,20 +83,29 @@ const FormLogic = ({
     })
   }
 
+  const handleStudyTopicChange = value => {
+    setEventRecord({
+      ...eventRecord,
+      studyTopic: value
+    })
+  }
+
+
   const fieldReset = () => {
     setEventRecord({
       name: "",
       description: "",
       location: "",
       meetUrl: "",
-      eventTypeId: 0,
+      eventTypeId: "",
       gameDetails: { id: 0, name: 'Search for the game you want to play...' },
-      studyTopic: "",
+      studyTopic: {},
+      imageUrl: "",
       otherType: "",
       startDate: currentDate.getTime(),
       endDate: currentDate.getTime(),
-      repeats: "",
-      alerts: "",
+      repeats: "false",
+      alerts: "false",
     })
   }
 
@@ -106,12 +124,14 @@ const FormLogic = ({
     <Form
       eventRecord={eventRecord}
       eventTypes={eventTypes}
+      studyTopics={studyTopics}
       onSubmitHandler={onSubmitHandler}
       handleStartDateChange={handleStartDateChange}
       handleEndDateChange={handleEndDateChange}
       handleChange={handleChange}
       handleInputChange={handleInputChange}
       handleGameDetailsChange={handleGameDetailsChange}
+      handleStudyTopicChange={handleStudyTopicChange}
       clearForm={clearForm}
       loadGames={loadGames}
       errors={errors}

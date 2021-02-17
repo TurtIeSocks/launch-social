@@ -16,7 +16,7 @@ class Event extends Model {
         location: { type: "string" },
         meetUrl: { type: "string" },
         eventTypeId: { type: ["integer", "string"] },
-        studyTopic: { type: "string" },
+        imageUrl: { type: 'string' },
         startDate: { type: ["integer", "string"] },
         endDate: { type: ["integer", "string"] },
         repeats: { type: ["boolean", "string"] },
@@ -25,7 +25,7 @@ class Event extends Model {
     }
   }
   static get relationMappings() {
-    const { EventType, Game, User, Interest } = require('./index.js')
+    const { EventType, Game, User, Interest, StudyTopic } = require('./index.js')
 
     return {
       eventType: {
@@ -71,7 +71,15 @@ class Event extends Model {
           from: 'events.id',
           to: 'interests.eventId'
         }
-      }
+      },
+      studyTopic: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: StudyTopic,
+        join: {
+          from: 'events.studyTopicId',
+          to: 'studyTopics.id'
+        }
+      },
     }
   }
 }

@@ -5,7 +5,7 @@ class GameSeeder {
   static async seed() {
     const gameIds = [1877, 7348, 109462, 1067, 7346, 111469, 115, 1905, 121, 3277, 27789, 3182, 72, 1911, 90101, 11198, 40927, 114795, 25657]
 
-    for (let i = 0 i < gameIds.length i++) {
+    for (let i = 0; i < gameIds.length; i++) {
       const gameDetails = await Igdb.seedGames(gameIds[i])
       let { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails[0]
       if (!multiplayer_modes) multiplayer_modes = [{onlinemax: 1}]

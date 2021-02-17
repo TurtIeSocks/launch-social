@@ -2,7 +2,7 @@ import express from "express"
 import objection from "objection"
 const { ValidationError } = objection
 
-import { Event, EventType, Game, GameImage, GamePlatform, GameVideo } from '../../../models/index.js'
+import { Event, EventType, StudyTopic, Game, GameImage, GamePlatform, GameVideo } from '../../../models/index.js'
 import EventSerializer from "../../../serializers/EventSerializer.js"
 import cleanUserInput from "../../../services/cleanUserInput.js"
 import eventInterestsRouter from './eventInterestsRouter.js'
@@ -36,18 +36,28 @@ eventsRouter.post("/", async (req, res) => {
     const { body } = req
     const formInput = cleanUserInput(body)
     let { eventTypeId } = formInput
-    const { name, description, location, meetUrl, gameDetails, studyTopic, otherType, startDate, endDate, repeats, alerts } = formInput
+    const { name, description, location, meetUrl, gameDetails, studyTopic, imageUrl, otherType, startDate, endDate, repeats, alerts } = formInput
     const userId = req.user.id
-
+    
     if (otherType) {
       let newType = await EventType.query()
         .insert({ name: otherType })
         .returning('*')
       eventTypeId = newType.id
     }
-    
+
+    let studyTopicId
+    if (studyTopic && studyTopic.__isNew__) {
+      let newStudyTopic = await StudyTopic.query()
+        .insert({ name: studyTopicId.label, imageUrl })
+        .returning('*')
+      studyTopicId = newStudyTopic.id
+    } else if (studyTopic) {
+      studyTopicId = studyTopic.value
+    }
+
     let gameId
-    if (gameDetails.id !== 0) {
+    if (gameDetails && gameDetails.id !== 0) {
       const checkIfGameAlreadyExists = await Game.query().findOne({ apiId: gameDetails.id })
       if (!checkIfGameAlreadyExists) {
         let { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails
@@ -81,7 +91,7 @@ eventsRouter.post("/", async (req, res) => {
     }
 
     await Event.query()
-      .insert({ userId, name, description, location, meetUrl, eventTypeId, gameId, studyTopic, startDate, endDate, repeats, alerts })
+      .insert({ userId, name, description, location, meetUrl, eventTypeId, gameId, studyTopicId, startDate, endDate, repeats, alerts })
     return res.status(201).json()
   } catch (error) {
     if (error instanceof ValidationError) {
@@ -96,7 +106,7 @@ eventsRouter.patch("/:id", async (req, res) => {
     const { body } = req
     const formInput = cleanUserInput(body)
     let { eventTypeId, gameId, startDate, endDate } = formInput
-    const { name, description, location, meetUrl, gameDetails, studyTopic, otherType, repeats, alerts } = formInput
+    const { name, description, location, meetUrl, gameDetails, studyTopic, imageUrl, otherType, repeats, alerts } = formInput
     const userId = req.user.id
     const { id } = req.params
 
@@ -106,15 +116,25 @@ eventsRouter.patch("/:id", async (req, res) => {
         .returning('*')
       eventTypeId = newType.id
     }
-    
+
+    let studyTopicId
+    if (studyTopic && studyTopic.__isNew__) {
+      let newStudyTopic = await StudyTopic.query()
+        .insert({ name: studyTopicId.label, imageUrl })
+        .returning('*')
+      studyTopicId = newStudyTopic.id
+    } else if (studyTopic) {
+      studyTopicId = studyTopic.value
+    }
+
     if (typeof startDate === 'string') {
       let start = new Date(startDate)
       startDate = start.getTime()
       let end = new Date(endDate)
       endDate = end.getTime()
-    } 
-    
-    if (gameDetails.id !== 0) {
+    }
+
+    if (gameDetails && gameDetails.id !== 0) {
       const checkIfGameAlreadyExists = await Game.query().findOne({ apiId: gameDetails.apiId })
       if (!checkIfGameAlreadyExists) {
         let { id, name, cover, multiplayer_modes, platforms, screenshots, summary, url, videos } = gameDetails
@@ -146,10 +166,10 @@ eventsRouter.patch("/:id", async (req, res) => {
         gameId = checkIfGameAlreadyExists.id
       }
     }
-    
+
     await Event.query()
       .findById(id)
-      .update({ userId, name, description, location, meetUrl, eventTypeId, gameId, studyTopic, startDate, endDate, repeats, alerts })
+      .update({ userId, name, description, location, meetUrl, eventTypeId, gameId, studyTopicId, startDate, endDate, repeats, alerts })
     return res.status(201).json()
   } catch (error) {
     if (error instanceof ValidationError) {
@@ -162,7 +182,7 @@ eventsRouter.patch("/:id", async (req, res) => {
 eventsRouter.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params
-    
+
     await Event.query()
       .findById(id)
       .delete()

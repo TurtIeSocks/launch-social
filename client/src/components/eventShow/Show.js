@@ -2,7 +2,7 @@ import React from "react"
 import { ThemeProvider } from '@material-ui/core/styles'
 import { Grid, Divider, Typography } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
-import theme from '../mui/theme.js' 
+import theme from '../mui/theme.js'
 import useStyles from './styling.js'
 
 const Show = ({
@@ -11,10 +11,11 @@ const Show = ({
   carouselImages,
   carouselVideos,
   getDate,
+  getUrl,
+  getCoverArt,
   getEventCreator,
   getInterestedUsers,
   getPlatforms,
-  coverArt,
   getMeetUrl,
   editButton,
   deleteButton
@@ -42,8 +43,8 @@ const Show = ({
           <Divider className={classes.divider} light />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <a href={`${game.url}`} target="_blank">
-            <img src={coverArt} className={classes.coverArt} />
+          <a href={`${getUrl(event.eventTypeId)}`} target="_blank">
+            <img src={getCoverArt(event.eventTypeId)} className={classes.coverArt} />
           </a>
         </Grid>
         <Grid item xs={9} sm={7}>

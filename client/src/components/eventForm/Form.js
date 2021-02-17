@@ -1,6 +1,6 @@
 import React from 'react'
 import ErrorList from "../ErrorList.js"
-import theme from '../mui/theme.js' 
+import theme from '../mui/theme.js'
 import useStyles from './styling.js'
 
 import { Grid, TextField, Button, MenuItem } from '@material-ui/core'
@@ -9,16 +9,19 @@ import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 
 import DateFnsUtils from '@date-io/date-fns'
 import AsyncSelect from 'react-select/async'
+import CreatableSelect from 'react-select/creatable'
 
 const EventForm = ({
   eventRecord,
   eventTypes,
+  studyTopics,
   onSubmitHandler,
   handleStartDateChange,
   handleEndDateChange,
   handleChange,
   handleInputChange,
   handleGameDetailsChange,
+  handleStudyTopicChange,
   clearForm,
   loadGames,
   errors,
@@ -44,15 +47,29 @@ const EventForm = ({
     )
   } else if (eventRecord.eventTypeId == 2) {
     specialFields = (
-      <TextField
-        className={classes.longFormInput}
-        name="studyTopic"
-        id="outlined-name"
-        label="Study Topic"
-        value={eventRecord.studyTopic}
-        variant="outlined"
-        onChange={handleChange}
-      />
+      <>
+        <CreatableSelect
+          id='studyTopic'
+          name=''
+          isClearable
+          className='react-select-menu'
+          value={eventRecord.studyTopic}
+          onChange={handleStudyTopicChange}
+          onInputChange={handleInputChange}
+          options={studyTopics}
+        />
+        {eventRecord.studyTopic && eventRecord.studyTopic.__isNew__ &&
+          <TextField
+            className={classes.longFormInput}
+            name="imageUrl"
+            id="outlined-imageUrl"
+            label="New Study Topic Image URL"
+            value={eventRecord.imageUrl}
+            variant="outlined"
+            onChange={handleChange}
+          />
+        }
+      </>
     )
   } else if (eventRecord.eventTypeId == 3) {
     specialFields = (
@@ -85,7 +102,7 @@ const EventForm = ({
               >
                 <Grid item xs={12} className={classes.formTitle}>
                   {formName}
-              </Grid>
+                </Grid>
                 <Grid item xs={12} sm={6} md={6}>
                   <TextField
                     className={classes.formInput}

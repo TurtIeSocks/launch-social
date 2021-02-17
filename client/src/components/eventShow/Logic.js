@@ -129,9 +129,20 @@ const EventShow = props => {
     })
   }
 
-  let coverArt = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1920px-Unofficial_JavaScript_logo_2.svg.png'
-  if (event.gameDetails) {
-    coverArt = `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.gameDetails.coverArt}.jpg`
+  const getCoverArt = () => {
+    if (event.gameDetails) {
+      return `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.gameDetails.coverArt}.jpg`
+    } else if (event.studyTopic) {
+      return event.studyTopic.imageUrl
+    }
+  }
+
+  const getUrl = () => {
+    if (event.gameDetails) {
+      return event.gameDetails.url
+    } else if (event.studyTopic) {
+      return `https://en.wikipedia.org/wiki/${event.studyTopic.name}`
+    }
   }
 
   const generateCarouselImages = images => {
@@ -182,13 +193,12 @@ const EventShow = props => {
   let editButton, deleteButton = ''
   if (props.user && props.user.id === event.userId) {
     editButton =
-
       <Link to={`/events/${event.id}/edit`} >
-        <Edit fontSize='large' color='secondary'/>
+        <Edit fontSize='large' color='secondary' />
       </Link>
     deleteButton =
       <Link to={`/events/${event.id}/delete`}>
-        <Delete fontSize='large' color='primary'/>
+        <Delete fontSize='large' color='primary' />
       </Link>
   }
 
@@ -200,19 +210,20 @@ const EventShow = props => {
   }, [game])
 
   return (
-    <Show 
-    event={event}
-    game={game}
-    carouselImages={carouselImages}
-    carouselVideos={carouselVideos}
-    getDate={getDate}
-    getEventCreator={getEventCreator}
-    getInterestedUsers={getInterestedUsers}
-    getPlatforms={getPlatforms}
-    coverArt={coverArt}
-    getMeetUrl={getMeetUrl}
-    editButton={editButton}
-    deleteButton={deleteButton}
+    <Show
+      event={event}
+      game={game}
+      getCoverArt={getCoverArt}
+      getUrl={getUrl}
+      carouselImages={carouselImages}
+      carouselVideos={carouselVideos}
+      getDate={getDate}
+      getEventCreator={getEventCreator}
+      getInterestedUsers={getInterestedUsers}
+      getPlatforms={getPlatforms}
+      getMeetUrl={getMeetUrl}
+      editButton={editButton}
+      deleteButton={deleteButton}
     />
   )
 }

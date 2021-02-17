@@ -15,7 +15,8 @@ const Edit = props => {
     meetUrl: "",
     eventTypeId: "",
     gameDetails: { id: 0, name: 'Search for the game you want to play...' },
-    studyTopic: "",
+    studyTopic: {},
+    imageUrl: "",
     otherType: "",
     startDate: currentDate.getTime(),
     endDate: currentDate.getTime(),
@@ -38,6 +39,12 @@ const Edit = props => {
         if (key === 'alerts') body.event[key] = 'false'
         if (key === 'repeats') body.event[key] = 'false'
         if (body.event[key] === null) body.event[key] = ''
+      }
+      if (body.event.studyTopic) {
+        for ( const [key, value] of Object.entries(body.event.studyTopic)) {
+          if (key === 'id') body.event.studyTopic.value = value
+          if (key === 'name') body.event.studyTopic.label = value
+        }  
       }
       setEventRecord({...body.event, eventTypeId: body.event.eventType.id, startDate, endDate})
     } catch (error) {

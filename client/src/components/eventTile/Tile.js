@@ -6,62 +6,51 @@ import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 import { usePushingGutterStyles } from '@mui-treasury/styles/gutter/pushing';
 import { useLabelIconStyles } from '@mui-treasury/styles/icon/label';
 import { useRowFlexStyles } from '@mui-treasury/styles/flex/row';
-import { Grid, Avatar, Card, CardContent, CardMedia, Divider } from '@material-ui/core';
+import { Grid, Avatar, Card, CardContent, CardMedia, Divider, Typography } from '@material-ui/core';
 import useStyles from './styling.js'
 
-const Tile = ({ event, interested, attending }) => {
-  const styles = useStyles();
+const Tile = ({ event, interested, attending, getThumbnail, convertDate }) => {
+  const classes = useStyles();
   const gutterStyles = usePushingGutterStyles({ space: 1.5 });
   const labelStyles = useLabelIconStyles({ linked: true });
   const flexStyles = useRowFlexStyles();
 
-  const convertDate = (epochTime) => {
-    const date = new Date(parseInt(epochTime))
-    const dayOfWeek = date.toLocaleDateString('default', { weekday: 'short' })
-    const month = date.toLocaleDateString('default', { month: 'short' })
-    const day = date.getDate()
-    const time = date.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-    return `${dayOfWeek} ${month} ${day} ${time}`
-  }
-
-  let coverArt = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1920px-Unofficial_JavaScript_logo_2.svg.png'
-  if (event.gameDetails) {
-    coverArt = `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.gameDetails.coverArt}.jpg`
-  }
-  
-  const titleText = `${convertDate(event.startDate)}`
-
   return (
-    <Card className={styles.card} elevation={3}>
+    <Card className={classes.card} elevation={3}>
       <CardMedia
-        className={styles.media}
-        image={coverArt}
+        className={classes.media}
+        image={getThumbnail(event)}
       />
-      <CardContent className={styles.content}>
+      <CardContent className={classes.content}>
         <Grid container
+          spacing={1}
           alignItems="center"
-          justify="space-between"
+          justify="center"
         >
-          <Grid item xs={8}>
-            <h3 className={styles.heading}>{event.name}</h3>
+          <Grid item xs={12} sm={8}>
+            <Typography variant='h3' className={classes.heading}>{event.name}</Typography>
           </Grid>
-          <Grid item xs={4}>
-            <h2 className={styles.date}>{titleText}</h2>
+          <Grid item xs={12} sm={4}>
+            <Typography variant='h2' className={classes.date}>{convertDate(event.startDate)}</Typography>
           </Grid>
-          <Grid item xs={8}>
-            <p className={styles.body}>{event.description}</p>
+          <Grid item xs={12} sm={8}>
+            <Typography variant='body1' className={classes.body}>{event.description}</Typography>
           </Grid>
-          <Grid item xs={1}>
-            <Avatar className={styles.avatar}><img src={`${event.user.avatarUrl}`} /></Avatar>
+          <Grid item xs={4} sm={1}>
+            <Avatar className={classes.avatar}><img src={`${event.user.avatarUrl}`} /></Avatar>
           </Grid>
-          <Grid item xs={3}>
-            <h2 className={styles.body}> {event.user.username}</h2>
+          <Grid item xs={8} sm={3}>
+            <Typography variant='h2' className={classes.username}>{event.user.username}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Divider className={styles.divider} light />
+            <Divider className={classes.divider} light />
+          </Grid>
+          <Grid item xs={12} sm={4}>
             <div className={flexStyles.parent}>
               <Link to={`/events/${event.id}`}>
-                Event Details <ArrowForwardIos className={labelStyles.icon} />
+                <Typography variant='body1' className={classes.eventDetails}>
+                  Event Details <ArrowForwardIos className={labelStyles.icon} />
+                </Typography>
               </Link>
               <div
                 className={cx(
@@ -70,10 +59,14 @@ const Tile = ({ event, interested, attending }) => {
                   gutterStyles.parent
                 )}
               >
-                {attending}
-                {interested}
               </div>
             </div>
+          </Grid>
+          <Grid item xs={6} sm={4} className={classes.buttons}>
+            {attending}
+          </Grid>
+          <Grid item xs={6} sm={4} className={classes.buttons}>
+            {interested}
           </Grid>
         </Grid>
       </CardContent>

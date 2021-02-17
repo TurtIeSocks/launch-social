@@ -85,7 +85,7 @@ const Edit = props => {
   }
 
   if (shouldRedirect) {
-    return <Redirect to="/" />
+    return <Redirect to={`/events/${eventId}`} />
   }
 
   return (

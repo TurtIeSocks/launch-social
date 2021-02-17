@@ -1,6 +1,6 @@
 import React from "react"
 
-const Profile = ({ user }) => {
+const UserProfile = ({ user }) => {
 
   let userPageContent = ''
   if (user) {
@@ -17,4 +17,4 @@ const Profile = ({ user }) => {
   )
 }
 
-export default Profile
+export default UserProfile

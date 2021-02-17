@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { Redirect } from "react-router-dom"
+import Button from '@material-ui/core/Button';
+import theme from '../mui/theme.js'
 
 const SignOutButton = () => {
   const [shouldRedirect, setShouldRedirect] = useState(false)
@@ -29,9 +30,9 @@ const SignOutButton = () => {
   }
 
   return (
-    <button type="button" className="button" onClick={signOut}>
+    <Button variant="contained" color="primary" onClick={signOut}>
       Sign Out
-    </button>
+    </Button>
   )
 }
 

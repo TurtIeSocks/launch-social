@@ -17,6 +17,9 @@ class GameSerializer {
     const platforms = await game.$relatedQuery('gamePlatforms')
     serializedGame.platforms = await GameSerializer.getAllPlatforms(platforms)
 
+    const genres = await game.$relatedQuery('gameGenres')
+    serializedGame.genres = await GameSerializer.getAllGenres(genres)
+
     return serializedGame
   }
 
@@ -80,6 +83,25 @@ class GameSerializer {
       return serializedPlatform
     }))
   }
+
+  static async getGenre(genre) {
+    const allowedAttributes = ["name"]
+    
+    const serializedGenre = {}
+
+    for (const attribute of allowedAttributes) {
+      serializedGenre[attribute] = genre[attribute]
+    }
+    return serializedGenre
+  }
+
+  static async getAllGenres(genres) {
+    return await Promise.all(genres.map(async genre => {
+      const serializedGenre = await GameSerializer.getGenre(genre)
+      return serializedGenre
+    }))
+  }
+
 
 }
 

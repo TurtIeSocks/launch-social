@@ -6,10 +6,14 @@
  * @param {Knex} knex
  */
 exports.up = async (knex) => {
-  return knex.schema.createTable('years', table => {
+  return knex.schema.createTable('gameImages', table => {
     table.bigIncrements('id')
-    table.integer('year').notNullable().unique()
-    table.boolean('leapYear').notNullable()
+    table.string('imageId').notNullable()
+    table.bigInteger('gameId')
+      .notNullable()
+      .index()
+      .references('games.id')
+      .unsigned()
     table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
     table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
@@ -19,5 +23,5 @@ exports.up = async (knex) => {
  * @param {Knex} knex
  */
 exports.down = (knex) => {
-  return knex.schema.dropTableIfExists('years')
+  return knex.schema.dropTableIfExists('gameImages')
 }

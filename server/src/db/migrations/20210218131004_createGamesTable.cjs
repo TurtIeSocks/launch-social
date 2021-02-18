@@ -5,13 +5,15 @@
 /**
  * @param {Knex} knex
  */
-exports.up = async (knex) => {
-  return knex.schema.createTable('months', table => {
+ exports.up = async (knex) => {
+  return knex.schema.createTable('games', table => {
     table.bigIncrements('id')
-    table.string('name').notNullable().unique()
-    table.string('short').notNullable()
-    table.integer('numOfDays').notNullable()
-    table.integer('jsValue').notNullable()
+    table.integer('apiId')
+    table.string('name')
+    table.text('summary')
+    table.integer('maxPlayers')
+    table.string('coverArt')
+    table.string('url')
     table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
     table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
@@ -21,5 +23,5 @@ exports.up = async (knex) => {
  * @param {Knex} knex
  */
 exports.down = (knex) => {
-  return knex.schema.dropTableIfExists('months')
+  return knex.schema.dropTableIfExists('games')
 }

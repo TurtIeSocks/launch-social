@@ -6,7 +6,7 @@ class Game extends Model {
   }
 
   static get relationMappings() {
-    const { Event, GameImage, GameVideo, GamePlatform } = require('../index.js')
+    const { Event, GameImage, GameVideo, GamePlatform, Platform, GameGenre, Genre } = require('../index.js')
 
     return {
       events: {
@@ -34,11 +34,27 @@ class Game extends Model {
         }
       },
       gamePlatforms: {
-        relation: Model.HasManyRelation,
-        modelClass: GamePlatform,
+        relation: Model.ManyToManyRelation,
+        modelClass: Platform,
         join: {
           from: 'games.id',
-          to: 'gamePlatforms.gameId'
+          through: {
+            from: 'gamePlatforms.gameId',
+            to: 'gamePlatforms.platformId'
+          },
+          to: 'platforms.id'
+        }
+      },
+      gameGenres: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Genre,
+        join: {
+          from: 'games.id',
+          through: {
+            from: 'gameGenres.gameId',
+            to: 'gameGenres.genreId'
+          },
+          to: 'genres.id'
         }
       }
     }

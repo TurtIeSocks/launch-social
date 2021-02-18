@@ -6,14 +6,18 @@
  * @param {Knex} knex
  */
 exports.up = async (knex) => {
-  return knex.schema.createTable('games', table => {
+  return knex.schema.createTable('gameGenres', table => {
     table.bigIncrements('id')
-    table.integer('apiId')
-    table.string('name')
-    table.text('summary')
-    table.integer('maxPlayers')
-    table.string('coverArt')
-    table.string('url')
+    table.bigInteger('gameId')
+      .notNullable()
+      .index()
+      .references('games.id')
+      .unsigned()
+    table.bigInteger('genreId')
+      .notNullable()
+      .index()
+      .references('genres.id')
+      .unsigned()
     table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
     table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
@@ -23,5 +27,5 @@ exports.up = async (knex) => {
  * @param {Knex} knex
  */
 exports.down = (knex) => {
-  return knex.schema.dropTableIfExists('games')
+  return knex.schema.dropTableIfExists('gameGenres')
 }

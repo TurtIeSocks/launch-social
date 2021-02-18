@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react"
 import { Link, withRouter } from "react-router-dom"
 import { Grid, Divider, Typography } from '@material-ui/core'
 import ReactPlayer from 'react-player'
-import { Delete, Edit } from '@material-ui/icons/';
+import { Delete, Edit } from '@material-ui/icons/'
 import Show from './Show.js'
 import useStyles from './styling.js'
 
 const EventShow = props => {
-  const classes = useStyles();
+  const classes = useStyles()
   const [event, setEvent] = useState({})
   const [game, setGame] = useState({})
   const [carouselImages, setCarouselImages] = useState([])

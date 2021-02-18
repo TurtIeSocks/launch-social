@@ -25,13 +25,13 @@ const TopBar = ({ user }) => {
     if (user) {
       return (
         <Link to="/new-event" className={classes.link}>
-          <Typography align='center'><AddBox className={classes.add} />&nbsp;Add an Event</Typography>
+          <Typography align='center'><AddBox className={classes.add} />&nbspAdd an Event</Typography>
         </Link>
       )
     } else {
       return (
         <a href="/auth/github">
-          <Typography align='center'><AddBox />&nbsp;Add an Event</Typography>
+          <Typography align='center'><AddBox />&nbspAdd an Event</Typography>
         </a>
       )
     }
@@ -49,7 +49,7 @@ const TopBar = ({ user }) => {
             color="inherit"
           >
             <Typography variant='subtitle1'>{user.username}</Typography>
-          &nbsp;<AccountCircle />
+          &nbsp<AccountCircle />
           </IconButton>
           <Menu
             id="menu-appbar"
@@ -69,7 +69,7 @@ const TopBar = ({ user }) => {
             <MenuItem onClick={handleClose}>
               <Link to="/user-profile">
                 <Button variant="contained" color="secondary">
-                  Profile&nbsp;&nbsp;
+                  Profile&nbsp&nbsp
                 </Button>
               </Link>
             </MenuItem>

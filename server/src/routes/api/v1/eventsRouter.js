@@ -9,20 +9,6 @@ import eventInterestsRouter from './eventInterestsRouter.js'
 
 const eventsRouter = new express.Router()
 
-eventsRouter.get("/", async (req, res) => {
-  try {
-    const currentDate = (new Date).getTime()
-    const events = await Event.query()
-      .where('endDate', '>', currentDate)
-      .orderBy(['startDate', 'endDate'])
-    const serializedEvents = await EventSerializer.getAll(events)
-    const stats = await EventSerializer.getStats()
-    res.status(200).json({ events: serializedEvents, stats: stats })
-  } catch (error) {
-    res.status(500).json({ error: error })
-  }
-})
-
 eventsRouter.get("/:id", async (req, res) => {
   const { id } = req.params
   try {

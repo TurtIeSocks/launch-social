@@ -25,6 +25,6 @@ const useStyles = makeStyles((theme) => ({
   longFormInput: {
     width: '90%'
   }
-}));
+}))
 
 export default useStyles

@@ -20,7 +20,7 @@ const Show = ({
   editButton,
   deleteButton
 }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <ThemeProvider theme={theme}>

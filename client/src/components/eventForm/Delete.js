@@ -1,13 +1,12 @@
-import { Button } from '@material-ui/core';
 import React, { useState } from 'react'
 import { Redirect } from "react-router-dom"
 import { ThemeProvider } from '@material-ui/core/styles'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography, Button } from '@material-ui/core'
 import theme from '../mui/theme.js'
 import useStyles from './styling.js' 
 
 const DeleteEvent = props => {
-  const classes = useStyles();
+  const classes = useStyles()
   const [shouldRedirect, setShouldRedirect] = useState({
     enable: false,
     where: '/'

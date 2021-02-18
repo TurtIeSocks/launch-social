@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
   card: {
@@ -72,6 +72,6 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   eventDetails: {
     fontSize: 14
   }
-}));
+}))
 
 export default useStyles

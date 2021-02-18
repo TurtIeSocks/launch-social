@@ -1,19 +1,19 @@
-import React from 'react';
+import React from 'react'
 
-import cx from 'clsx';
-import { Link } from "react-router-dom";
-import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
-import { usePushingGutterStyles } from '@mui-treasury/styles/gutter/pushing';
-import { useLabelIconStyles } from '@mui-treasury/styles/icon/label';
-import { useRowFlexStyles } from '@mui-treasury/styles/flex/row';
-import { Grid, Avatar, Card, CardContent, CardMedia, Divider, Typography } from '@material-ui/core';
+import cx from 'clsx'
+import { Link } from "react-router-dom"
+import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos'
+import { usePushingGutterStyles } from '@mui-treasury/styles/gutter/pushing'
+import { useLabelIconStyles } from '@mui-treasury/styles/icon/label'
+import { useRowFlexStyles } from '@mui-treasury/styles/flex/row'
+import { Grid, Avatar, Card, CardContent, CardMedia, Divider, Typography } from '@material-ui/core'
 import useStyles from './styling.js'
 
 const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiveEvent }) => {
-  const classes = useStyles();
-  const gutterStyles = usePushingGutterStyles({ space: 1.5 });
-  const labelStyles = useLabelIconStyles({ linked: true });
-  const flexStyles = useRowFlexStyles();
+  const classes = useStyles()
+  const gutterStyles = usePushingGutterStyles({ space: 1.5 })
+  const labelStyles = useLabelIconStyles({ linked: true })
+  const flexStyles = useRowFlexStyles()
 
   return (
     <Card className={eval(`classes.${isActiveEvent(event)}`)} elevation={3}>
@@ -71,7 +71,7 @@ const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiv
         </Grid>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
 export default Tile

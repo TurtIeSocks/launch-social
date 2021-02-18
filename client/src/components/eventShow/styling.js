@@ -80,6 +80,6 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     margin: theme.spacing(1)
   }
-}));
+}))
 
 export default useStyles

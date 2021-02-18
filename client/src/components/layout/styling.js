@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +36,18 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     backgroundColor: theme.palette.background.paper,
     minWidth: 320
+  },
+  pagination: {
+        "& > *": {
+      justifyContent: "center",
+      display:'flex'
+    },
+    backgroundColor: 'white',
+    borderRadius: 16,
+    minHeight: 25,
+    padding: 10,
+    margin: '0 auto'
   }
-}));
+}))
 
 export default useStyles

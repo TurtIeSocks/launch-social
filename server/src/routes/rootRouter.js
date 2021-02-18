@@ -4,7 +4,7 @@ import clientRouter from "./clientRouter.js"
 import eventsRouter from './api/v1/eventsRouter.js'
 import basicsRouter from './api/v1/basicsRouter.js'
 import gamesRouter from './api/v1/gamesRouter.js'
-import homepageRouter from "./api/v1/homePageRouter.js"
+import homepageRouter from "./api/v1/homepageRouter.js"
 
 const rootRouter = new express.Router()
 rootRouter.use("/", clientRouter)

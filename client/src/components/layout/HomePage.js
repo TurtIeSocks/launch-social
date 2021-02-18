@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ThemeProvider } from '@material-ui/styles'
 import { AppBar, Grid, Tab, Tabs } from '@material-ui/core'
+import { Pagination } from '@material-ui/lab'
 
 import TabPanel from './TabPanel.js'
 import theme from '../mui/theme.js'
@@ -12,17 +13,20 @@ const HomePage = props => {
   const classes = useStyles()
   const [events, setEvents] = useState([])
   const [stats, setStats] = useState(undefined)
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0)
+  const [page, setPage] = useState(1)
+  const [paginationPages, setPaginationPages] = useState(10)
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch(`/api/v1/events`)
+      const response = await fetch(`/api/v1/homepage/${page}`)
       if (!response.ok) {
         throw new Error(`${response.status} (${response.statusText})`)
       }
       const body = await response.json()
       setEvents(body.events)
       setStats(body.stats)
+      setPaginationPages(Math.ceil(body.total / 10))
     } catch (error) {
       console.error(error.message)
     }
@@ -30,18 +34,23 @@ const HomePage = props => {
 
   useEffect(() => {
     fetchEvents()
-  }, [])
+  }, [page])
 
   const a11yProps = (index) => {
     return {
       id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
-    };
+    }
   }
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
+
+  const handlePaginationChange = (event, value) => {
+    setPage(value)
+  }
+
 
   const allEvents = events.map(event => {
     return (
@@ -60,14 +69,26 @@ const HomePage = props => {
         <Grid container
           justify="center"
           spacing={2}>
-          <Grid container item xs={12} sm={9} md={8} lg={7}
+          <Grid container item xs={12} sm={12} md={8} lg={7}
             direction="row"
             justify="center"
             alignItems="center"
             spacing={2}>
             {allEvents}
+            <Grid item xs={7} >
+              <div className={classes.pagination}>
+                <Pagination
+                  count={paginationPages}
+                  color="secondary"
+                  page={page}
+                  onChange={handlePaginationChange}
+                  size='large'
+                  variant='outlined'
+                />
+              </div>
+            </Grid>
           </Grid>
-          <Grid container item xs={4} sm={4} md={3} lg={3}>
+          <Grid container item xs={4} sm={4} md={4} lg={3}>
             <Grid item xs={12}>
               <div className={classes.tabs}>
                 <AppBar position="static" color='primary'>

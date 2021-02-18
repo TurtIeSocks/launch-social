@@ -27,7 +27,7 @@ const EventForm = ({
   errors,
   formName
 }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   let specialFields = ''
   if (eventRecord.eventTypeId == 1) {
@@ -206,7 +206,7 @@ const EventForm = ({
         </ThemeProvider>
       </Grid>
     </Grid>
-  );
+  )
 }
 
 export default EventForm

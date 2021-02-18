@@ -1,10 +1,10 @@
-import React from 'react';
-import { ThemeProvider, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import React from 'react'
+import { ThemeProvider, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import theme from '../mui/theme.js'
 import useStyles from './styling.js'
 
 const Stats = ({ stats, type }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   const statsLanguage = type === 'gaming' ? {
     subType: 'game',
     title: 'Games',
@@ -16,7 +16,7 @@ const Stats = ({ stats, type }) => {
   }
 
   const createRows = (name, total, id) => {
-    return { name, total, id };
+    return { name, total, id }
   }
 
   let rows

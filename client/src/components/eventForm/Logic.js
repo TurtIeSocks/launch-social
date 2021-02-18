@@ -38,7 +38,7 @@ const FormLogic = ({
 
   const loadGames = (inputValue) => {
     return fetch(`/api/v1/games/names?search=${inputValue}`).then(res => res.json())
-  };
+  }
 
   useEffect(() => {
     fetchTypesAndTopics()
@@ -63,18 +63,18 @@ const FormLogic = ({
       ...eventRecord,
       startDate: date.getTime(),
     })
-  };
+  }
 
   const handleEndDateChange = (date) => {
     setEventRecord({
       ...eventRecord,
       endDate: date.getTime(),
     })
-  };
+  }
 
   const handleInputChange = value => {
     setInputValue(value)
-  };
+  }
 
   const handleGameDetailsChange = value => {
     setEventRecord({
@@ -137,7 +137,7 @@ const FormLogic = ({
       errors={errors}
       formName={formName}
     />
-  );
+  )
 }
 
 export default FormLogic

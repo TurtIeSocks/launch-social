@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 import theme from '../mui/theme.js'
+import { ThemeProvider } from "@material-ui/styles"
 
 const SignOutButton = () => {
   const [shouldRedirect, setShouldRedirect] = useState(false)
@@ -30,9 +31,11 @@ const SignOutButton = () => {
   }
 
   return (
-    <Button variant="contained" color="primary" onClick={signOut}>
-      Sign Out
+    <ThemeProvider theme={theme}>
+      <Button variant="contained" color="primary" onClick={signOut}>
+        Sign Out
     </Button>
+    </ThemeProvider>
   )
 }
 

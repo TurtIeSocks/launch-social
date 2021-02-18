@@ -28,8 +28,7 @@ class StudyTopicSeeder {
       { name: 'Dart', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Dart-logo.png' },
       { name: 'Jest', imageUrl: 'https://seeklogo.com/images/J/jest-logo-F9901EBBF7-seeklogo.com.png' },
       { name: 'Cypress', imageUrl: 'https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_7fcb618f84ed24432b01b5f848cab75f/cypress.png' },
-      { name: 'GitHub', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg' },
-      { name: 'Launch Academy', imageUrl: 'https://yt3.ggpht.com/ytc/AAUvwngWjo_V18xnwaq-m_C_kFJq-Q7lLJL9zM-tuloA=s176-c-k-c0x00ffffff-no-rj' }
+      { name: 'GitHub', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg' }
     ]
 
     for (const category of categories) {

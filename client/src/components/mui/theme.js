@@ -15,7 +15,7 @@ let theme = createMuiTheme({
       contrastText: '#fff',
     }
   }
-});
+})
 theme = responsiveFontSizes(theme)
 
 export default theme

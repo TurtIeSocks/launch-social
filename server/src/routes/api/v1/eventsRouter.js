@@ -11,7 +11,9 @@ const eventsRouter = new express.Router()
 
 eventsRouter.get("/", async (req, res) => {
   try {
+    const currentDate = (new Date).getTime()
     const events = await Event.query()
+      .where('endDate', '>', currentDate)
       .orderBy(['startDate', 'endDate'])
     const serializedEvents = await EventSerializer.getAll(events)
     res.status(200).json({ events: serializedEvents })
@@ -38,7 +40,7 @@ eventsRouter.post("/", async (req, res) => {
     let { eventTypeId } = formInput
     const { name, description, location, meetUrl, gameDetails, studyTopic, imageUrl, otherType, startDate, endDate, repeats, alerts } = formInput
     const userId = req.user.id
-    
+
     if (otherType) {
       let newType = await EventType.query()
         .insert({ name: otherType })

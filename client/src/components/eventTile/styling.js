@@ -6,6 +6,12 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     padding: spacing(2),
     borderRadius: 16,
   },
+  activeCard: {
+    display: 'flex',
+    padding: spacing(2),
+    borderRadius: 16,
+    border: 'solid 4px rgb(235,35,122)'
+  },
   media: {
     minWidth: '25%',
     maxWidth: '25%',

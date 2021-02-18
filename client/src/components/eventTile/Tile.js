@@ -9,14 +9,15 @@ import { useRowFlexStyles } from '@mui-treasury/styles/flex/row';
 import { Grid, Avatar, Card, CardContent, CardMedia, Divider, Typography } from '@material-ui/core';
 import useStyles from './styling.js'
 
-const Tile = ({ event, interested, attending, getThumbnail, convertDate }) => {
+const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiveEvent }) => {
   const classes = useStyles();
   const gutterStyles = usePushingGutterStyles({ space: 1.5 });
   const labelStyles = useLabelIconStyles({ linked: true });
   const flexStyles = useRowFlexStyles();
 
+  console.log(isActiveEvent(event))
   return (
-    <Card className={classes.card} elevation={3}>
+    <Card className={eval(`classes.${isActiveEvent(event)}`)} elevation={3}>
       <CardMedia
         className={classes.media}
         image={getThumbnail(event)}

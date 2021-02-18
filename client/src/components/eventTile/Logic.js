@@ -23,6 +23,15 @@ const TileLogic = ({ event, user }) => {
     downVoteButtonClass = 'secondary'
   }
 
+  const isActiveEvent = event => {
+    let isActive = 'card'
+    const currentDate = (new Date).getTime()
+    if (event.startDate < currentDate && event.endDate > currentDate) {
+      isActive = 'activeCard'
+    }
+    return isActive
+  }
+
   useEffect(() => {
     event.userInterests.forEach(interest => {
       if (user && interest.userId === user.id) {
@@ -173,6 +182,7 @@ const TileLogic = ({ event, user }) => {
       interested={interestedButton}
       getThumbnail={getThumbnail}
       convertDate={convertDate}
+      isActiveEvent={isActiveEvent}
     />
   )
 }

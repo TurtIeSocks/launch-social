@@ -16,7 +16,8 @@ eventsRouter.get("/", async (req, res) => {
       .where('endDate', '>', currentDate)
       .orderBy(['startDate', 'endDate'])
     const serializedEvents = await EventSerializer.getAll(events)
-    res.status(200).json({ events: serializedEvents })
+    const stats = await EventSerializer.getStats()
+    res.status(200).json({ events: serializedEvents, stats: stats })
   } catch (error) {
     res.status(500).json({ error: error })
   }

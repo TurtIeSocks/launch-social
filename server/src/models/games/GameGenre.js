@@ -1,32 +1,32 @@
 const Model = require('../Model.js')
 
-class GamePlatform extends Model {
+class GameGenre extends Model {
   static get tableName() {
-    return 'gamePlatforms'
+    return 'gameGenres'
   }
 
   static get relationMappings() {
-    const { Game, Platform } = require('../index.js')
+    const { Game, Genre } = require('../index.js')
 
     return {
       game: {
         relation: Model.BelongsToOneRelation,
         modelClass: Game,
         join: {
-          from: 'gamePlatforms.gameId',
+          from: 'gameGenres.gameId',
           to: 'games.id'
         }
       },
-      platform: {
+      genre: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Platform,
+        modelClass: Genre,
         join: {
-          from: 'gamePlatforms.platformId',
-          to: 'platforms.id'
+          from: 'gameGenres.genreId',
+          to: 'genres.id'
         }
       }
     }
   }
 }
 
-module.exports = GamePlatform
+module.exports = GameGenre

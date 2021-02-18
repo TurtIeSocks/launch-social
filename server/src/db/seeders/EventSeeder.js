@@ -1,157 +1,80 @@
-import { Event } from "../../models/index.js"
+import { Event, Game, StudyTopic, User } from "../../models/index.js"
 
 class EventSeeder {
   static async seed() {
 
-    await Event.query().insert({
-      userId: 1,
-      name: 'Solo Gaming Party',
-      description: 'Great time playing a controversial game',
-      location: 'My Room',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 1,
-      studyTopic: '',
-      startDate: 1613497380000,
-      endDate: 1613515476000,
-      repeats: false,
-      alerts: false
-    })
+    const userCount = await User.query().count('id as value').first()
+    const gameCount = await Game.query().count('id as value').first()
+    const studyCount = await StudyTopic.query().count('id as value').first()
 
-    await Event.query().insert({
-      userId: 2,
-      name: 'Halo LAN Party Baby',
-      description: 'Old school vibes. Halo LAN party, yeah!',
-      location: 'Launch Pad',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 2,
-      studyTopic: '',
-      startDate: 1614293370000,
-      endDate: 1614311370000,
-      repeats: false,
-      alerts: false
-    })
+    const rng = (base, range) => {
+      return Math.floor(Math.random() * range + base)
+    }
 
-    await Event.query().insert({
-      userId: 3,
-      name: 'A Holiday Trip to an Island Far Far Away',
-      description: 'Come enjoy a relaxing evening on a boutique island with your favorite animal friends.',
-      location: 'Nook Island',
-      meetUrl: 'https://www.googlemeetup.com',
-      eventTypeId: 1,
-      gameId: 3,
-      studyTopic: '',
-      startDate: 1614397770000,
-      endDate: 1614401370000,
-      repeats: false,
-      alerts: false
-    })
+    const timeGenerator = () => {
+      const eventLength = rng(0, 2)
+      const start = rng((new Date).getTime(), 5097600000)
+      const end = eventLength ? rng(start, 5097600000) : rng(start, 43200000)
 
-    await Event.query().insert({
-      userId: 4,
-      name: 'Suuuuuuper Maaaaaaaario Bros 2',
-      description: 'Old school vibes playing a classic',
-      location: '1990',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 4,
-      studyTopic: '',
-      startDate: 1614444570000,
-      endDate: 1614458970000,
-      repeats: false,
-      alerts: false
-    })
+      return { start, end }
+    }
 
-    await Event.query().insert({
-      userId: 5,
-      name: 'Come explore the land of Hyrule',
-      description: 'Climb mountains, swim across lakes, explore spooky forests, oh boy!',
-      location: 'Home',
-      meetUrl: 'https://www.googleMeetup.com',
-      eventTypeId: 1,
-      gameId: 5,
-      studyTopic: '',
-      startDate: 1614545370000,
-      endDate: 1614559770000,
-      repeats: false,
-      alerts: false
-    })
+    const nameGenerator = (eventType, name) => {
+      const gameEvent = [
+        name, `Let's Play ${name}`, `I Love ${name}, Let's Try it Out!`, `This ${name} is so Much Fun!`, `${name} is Super Fun!`, `${name} and Chill?`, `Game Night!`, `Streaming ${name}`
+      ]
+      const studyEvent = [
+        name, `Let's Study ${name}`, `Anyone Down to Study ${name}?`, `Going to be Studying ${name} Today if Anyone Wants to Join`, `${name} is Confusing, Study Session?`, `Please HELP Me Study ${name}`, `Study Party!`, `System Check Review`
+      ]
 
-    await Event.query().insert({
-      userId: 1,
-      name: 'No, YOU\'RE SUS',
-      description: 'Online classic',
-      location: 'Wherever',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 6,
-      studyTopic: '',
-      startDate: 1614905370000,
-      endDate: 1614916170000,
-      repeats: false,
-      alerts: false
-    })
+      return eventType ? gameEvent[rng(0, gameEvent.length)] : studyEvent[rng(0, studyEvent.length)]
+    }
 
-    const event7 = await Event.query().insert({
-      userId: 2,
-      name: 'Get Ready To Be Toxic',
-      description: 'We\'re getting too comfortable with each other, lets increase the toxicity',
-      location: 'Launch Academy',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 7,
-      studyTopic: '',
-      startDate: 1614995370000,
-      endDate: 1615002570000,
-      repeats: false,
-      alerts: false
-    })
+    const descriptionGenerator = (eventType, details) => {
+      const genres = eventType ? details.genres.map(genre => genre.name) : []
+      const platforms = eventType ? details.platforms.map(platform => platform.name) : []
+      const gameEvent = [
+        `Playing ${details.name} if anyone is looking to join. It supports up to ${details.maxPlayers}${details.maxPlayers === 1 ? '' : 's'} and is a lot of fun!`, `Planning to play ${details.name} tonight, you can check out more info about the game at ${details.url} if you're interested.`, `I just got this awesome new game, please play it with me! It supports up to ${details.maxPlayers}${details.maxPlayers === 1 ? '' : 's'}`, `Looking for some ${details.name} buddies, anyone else looking to play?`, `Let's Play ${details.name} to Calm Ourselves After that System Check`, `Do you like ${genres.join(', ')}? Own a ${platforms.join(', ')}? Then you'll like ${details.name}.`
+      ]
+      const studyEvent = [
+        `Come study ${details.name} with me!`, `Studying ${details.name} for the System Check Tomorrow.`, `Going to be studying ${details.name} in the 24/7 Zoom if anyone is interested in joining.`, `Those who study ${details.name} together... pass...together?`, `Really need some help on ${details.name} if anyone is around!`
+      ]
 
-    await Event.query().insert({
-      userId: 3,
-      name: 'Lets Beat Up Some Kids',
-      description: 'You know you want to',
-      location: 'Boston Common',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 8,
-      studyTopic: '',
-      startDate: 1613497380000,
-      endDate: 1615175370000,
-      repeats: false,
-      alerts: false
-    })
+      return eventType ? gameEvent[rng(0, gameEvent.length)] : studyEvent[rng(0, studyEvent.length)]
+    }
 
-    await Event.query().insert({
-      userId: 4,
-      name: 'Yo, the classic, lets mine some blocks',
-      description: 'Bring snacks, it\'s going to be a long night',
-      location: 'Mom\'s basement',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 9,
-      studyTopic: '',
-      startDate: 1615261770000,
-      endDate: 1615348170000,
-      repeats: false,
-      alerts: false
-    })
+    for (let i = 1; i < parseInt(userCount.value); i++) {
+      const numEvents = rng(1, 10)
 
-    await Event.query().insert({
-      userId: 5,
-      name: 'Just do it',
-      description: 'No micro-transactions, kind of fun, always a classic',
-      location: '32B',
-      meetUrl: 'https://www.zoom.com',
-      eventTypeId: 1,
-      gameId: 12,
-      studyTopic: '',
-      startDate: 1617626970000,
-      endDate: 1617677370000,
-      repeats: false,
-      alerts: false
-    })
+      for (let j = 0; j < numEvents; j++) {
+        const dates = timeGenerator()
+        const meetUrl = rng(0, 2)
+        const eventType = rng(0, 2)
+        const details = eventType ?
+          await Game.query().findById(rng(1, parseInt(gameCount.value))) :
+          await StudyTopic.query().findById(rng(1, parseInt(studyCount.value)))
+
+        if (eventType) {
+          details.genres = await details.$relatedQuery('gameGenres')
+          details.platforms = await details.$relatedQuery('gamePlatforms')
+        }
+
+        await Event.query().insert({
+          userId: i,
+          name: nameGenerator(eventType, details.name),
+          description: descriptionGenerator(eventType, details),
+          location: rng(0, 2) ? 'Deck 7' : 'Virtual',
+          meetUrl: meetUrl ? 'https://www.zoom.com' : 'https://hangouts.google.com/',
+          eventTypeId: eventType ? 1 : 2,
+          studyTopicId: eventType ? null : details.id,
+          gameId: eventType ? details.id : null,
+          startDate: dates.start,
+          endDate: dates.end,
+          repeats: false,
+          alerts: false
+        })
+      }
+    }
   }
 }
 

@@ -15,7 +15,6 @@ const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiv
   const labelStyles = useLabelIconStyles({ linked: true });
   const flexStyles = useRowFlexStyles();
 
-  console.log(isActiveEvent(event))
   return (
     <Card className={eval(`classes.${isActiveEvent(event)}`)} elevation={3}>
       <CardMedia

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formTitle: {
     fontWeight: 'bold',
-    fontSize: '5vw',
+    fontSize: 50,
   },
   formInput: {
     width: '80%',

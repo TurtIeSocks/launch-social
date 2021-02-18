@@ -24,6 +24,18 @@ const useStyles = makeStyles((theme) => ({
   },
   add: {
     paddingTop: theme.spacing(1)
+  },
+  table: {
+    minWidth: 225,
+  },
+  tableTitle: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 25
+  },
+  tabs: {
+    backgroundColor: theme.palette.background.paper,
+    minWidth: 320
   }
 }));
 

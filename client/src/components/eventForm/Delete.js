@@ -6,7 +6,7 @@ import { Grid, Typography } from '@material-ui/core'
 import theme from '../mui/theme.js'
 import useStyles from './styling.js' 
 
-const Delete = props => {
+const DeleteEvent = props => {
   const classes = useStyles();
   const [shouldRedirect, setShouldRedirect] = useState({
     enable: false,
@@ -62,4 +62,4 @@ const Delete = props => {
   )
 }
 
-export default Delete
+export default DeleteEvent

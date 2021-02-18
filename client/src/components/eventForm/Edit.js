@@ -5,7 +5,7 @@ import Logic from './Logic.js'
 
 const currentDate = new Date
 
-const Edit = props => {
+const EditEvent = props => {
   const [errors, setErrors] = useState([])
   const [shouldRedirect, setShouldRedirect] = useState(false)
   const [eventRecord, setEventRecord] = useState({
@@ -100,4 +100,4 @@ const Edit = props => {
   )
 }
 
-export default Edit
+export default EditEvent

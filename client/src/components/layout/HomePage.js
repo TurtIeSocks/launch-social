@@ -9,7 +9,6 @@ import useStyles from './styling.js'
 import EventTile from '../eventTile/Logic.js'
 import Stats from './Stats.js'
 
-const HomePage = props => {
 const HomePage = ({
   events,
   user,

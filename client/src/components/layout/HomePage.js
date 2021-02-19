@@ -69,13 +69,13 @@ const HomePage = props => {
         <Grid container
           justify="center"
           spacing={2}>
-          <Grid container item xs={12} sm={12} md={8} lg={7}
+          <Grid container item sm={12} md={8} lg={7}
             direction="row"
             justify="center"
             alignItems="center"
             spacing={2}>
             {allEvents}
-            <Grid item xs={7} >
+            <Grid item xs={12} sm={7} >
               <div className={classes.pagination}>
                 <Pagination
                   count={paginationPages}
@@ -88,7 +88,7 @@ const HomePage = props => {
               </div>
             </Grid>
           </Grid>
-          <Grid container item xs={4} sm={4} md={4} lg={3}>
+          <Grid container item md={4} lg={3}>
             <Grid item xs={12}>
               <div className={classes.tabs}>
                 <AppBar position="static" color='primary'>

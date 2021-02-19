@@ -30,17 +30,14 @@ const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiv
           <Grid item xs={12} sm={8}>
             <Typography variant='h3' className={classes.heading}>{event.name}</Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={8} sm={4}>
             <Typography variant='h2' className={classes.date}>{convertDate(event.startDate)}</Typography>
           </Grid>
           <Grid item xs={12} sm={8}>
             <Typography variant='body1' className={classes.body}>{event.description}</Typography>
           </Grid>
-          <Grid item xs={4} sm={1}>
-            <Avatar className={classes.avatar}><img src={`${event.user.avatarUrl}`} /></Avatar>
-          </Grid>
-          <Grid item xs={8} sm={3}>
-            <Typography variant='h2' className={classes.username}>{event.user.username}</Typography>
+          <Grid item xs={3} sm={3}>
+            <Typography variant='h2' className={classes.username} display='inline'><img src={`${event.user.avatarUrl}`} className={classes.avatar}/>{event.user.username}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Divider className={classes.divider} light />

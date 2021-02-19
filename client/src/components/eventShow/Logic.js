@@ -90,12 +90,46 @@ const EventShow = props => {
   const getEventCreator = event => {
     const { id, username, profileUrl, avatarUrl } = event.user
     return (
-      <div key={id} className={classes.username}>
-        <Link to={profileUrl}>
-          <img src={avatarUrl} className={classes.avatar} /><Typography variant='caption'>{username}</Typography>
-        </Link>
-      </div>
+      <a href={profileUrl} target='_blank'>
+        <img src={avatarUrl} className={classes.avatar} />
+        <Typography variant='subtitle1' display='inline'>
+          &nbsp;{username}
+        </Typography>
+      </a>
     )
+  }
+
+  const getGameSummary = event => {
+    if (event && event.gameDetails) {
+      let summary = event.gameDetails.summary
+      if (summary.length > 500) {
+        summary = summary.substring(0, 500)
+        return (
+          <>
+            {summary}...
+            <a href={event.gameDetails.url}>Read More</a>
+          </>
+        )
+      } else {
+        return summary
+      }
+    }
+  }
+
+  const getGenres = event => {
+    if (event && event.gameDetails) {
+      return event.gameDetails.genres.map(genre => {
+        return (
+          <Grid
+            item
+            xs={3}
+            key={genre.name}
+          >
+            {genre.name}
+          </Grid>
+        )
+      })
+    }
   }
 
   const getInterestedUsers = (event, type) => {
@@ -104,9 +138,12 @@ const EventShow = props => {
       if (interest.value === type) {
         return (
           <div key={id} className={classes.username}>
-            <Link to={profileUrl}>
-              <img src={avatarUrl} className={classes.avatar} /><Typography variant='caption'>{username}</Typography>
-            </Link>
+            <a href={profileUrl} target='_blank'>
+              <img src={avatarUrl} className={classes.avatar} />
+              <Typography variant='subtitle1' display='inline'>
+                &nbsp;{username}
+              </Typography>
+            </a>
           </div>
         )
       }
@@ -114,15 +151,9 @@ const EventShow = props => {
   }
 
   const getPlatforms = (gamePlatforms) => {
-    let gridLogic = 2
-    if (gamePlatforms.length < 5) {
-      gridLogic = 3
-    } else if (gamePlatforms.length < 4) {
-      gridLogic = 4
-    }
     return gamePlatforms.map(platform => {
       return (
-        <Grid item xs={gridLogic} key={platform.imageId} className={classes.platforms}>
+        <Grid item xs={4} key={platform.imageId} className={classes.platforms}>
           {platform.name}
         </Grid>
       )
@@ -167,8 +198,8 @@ const EventShow = props => {
             key={video.videoId}>
             <ReactPlayer
               url={`https://www.youtube.com/watch?v=${video.videoId}`}
-              width={400}
-              height={225}
+              width={432}
+              height={243}
               playsinline
               className={classes.carouselVideo} />
           </div>
@@ -218,12 +249,14 @@ const EventShow = props => {
       carouselImages={carouselImages}
       carouselVideos={carouselVideos}
       getDate={getDate}
+      getGameSummary={getGameSummary}
       getEventCreator={getEventCreator}
       getInterestedUsers={getInterestedUsers}
       getPlatforms={getPlatforms}
       getMeetUrl={getMeetUrl}
       editButton={editButton}
       deleteButton={deleteButton}
+      getGenres={getGenres}
     />
   )
 }

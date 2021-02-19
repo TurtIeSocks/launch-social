@@ -2,20 +2,13 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    margin: theme.spacing(5),
+    display: 'flex',
     backgroundColor: '#EEEEEE',
     border: 'solid 5px #ED1A7A',
     borderRadius: theme.spacing(4),
-    padding: theme.spacing(1),
     color: '#33485E',
-    width: '90%',
-    display: 'flex',
-    textAlign: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
     backgroundColor: '#EEEEEE',
+    margin: theme.spacing(2)
   },
   divider: {
     marginTop: theme.spacing(1),
@@ -24,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: '#ED1A7A',
     fontWeight: 'bold',
+    textAlign: 'center'
   },
   date: {
     color: '#ED1A7A',
@@ -36,8 +30,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 15,
     maxHeight: 15,
     borderRadius: 10,
+    display: 'in'
   },
   username: {
+
   },
   headers: {
     color: '#33485E',
@@ -46,12 +42,10 @@ const useStyles = makeStyles((theme) => ({
   eventDescription: {
     color: '#33485E',
     textAlign: 'left',
-    margin: '1vw 1vw 0 1vw'
   },
   gameSummary: {
     color: '#49AEB9',
     textAlign: 'left',
-    margin: '1vw 1vw 0 1vw'
   },
   platformImage: {
     maxHeight: 50,
@@ -70,12 +64,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(3)
   },
   carouselVideo: {
-    padding: theme.spacing(1),
     marginLeft: 'auto',
     marginRight: 'auto'
   },
   coverArt: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    margin: '0 auto'
   },
   buttons: {
     margin: theme.spacing(1)

@@ -37,7 +37,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
   },
   date: {
     fontSize: 14,
-    fontWeight: 'light',
+    fontWeight: 'bold',
     letterSpacing: '0.5px',
     color: 'rgb(51,72,94)',
     marginBottom: 0,

@@ -105,7 +105,6 @@ eventsRouter.post("/", async (req, res) => {
             await GameGenre.query().insert({ gameId, genreId })
           }
         }
-
       } else {
         gameId = checkIfGameExists.id
       }
@@ -177,10 +176,39 @@ eventsRouter.patch("/:id", async (req, res) => {
           }
         }
         if (platforms) {
+          let platformId
           for (const platform of platforms) {
-            let name = platform.name ? platform.name : null
-            let imageId = platform.platform_logo ? platform.platform_logo.image_id : null
-            await GamePlatform.query().insert({ name, imageId, gameId })
+            const checkIfPlatformExists = await Platform.query().findOne({ apiId: platform.id })
+            if (!checkIfPlatformExists) {
+              const apiId = platform.id
+              const name = platform.name ? platform.name : null
+              const imageId = platform.platform_logo ? platform.platform_logo.image_id : null
+              const newPlatform = await Platform.query()
+                .insert({ apiId, name, imageId })
+                .returning('*')
+              platformId = newPlatform.id
+            } else {
+              platformId = checkIfPlatformExists.id
+            }
+            await GamePlatform.query().insert({ gameId, platformId })
+          }
+        }
+
+        if (genres) {
+          let genreId
+          for (const genre of genres) {
+            const checkIfGenreExists = await Genre.query().findOne({ apiId: genre.id })
+            if (!checkIfGenreExists) {
+              const apiId = genre.id
+              const name = genre.name ? genre.name : null
+              const newGenre = await Genre.query()
+                .insert({ apiId, name })
+                .returning('*')
+              genreId = newGenre.id
+            } else {
+              genreId = checkIfGenreExists.id
+            }
+            await GameGenre.query().insert({ gameId, genreId })
           }
         }
       } else {

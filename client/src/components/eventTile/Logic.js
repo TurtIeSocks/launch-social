@@ -1,7 +1,7 @@
 import { Button, ThemeProvider } from "@material-ui/core"
 import React, { useState, useEffect } from "react"
 import Tile from './Tile'
-import theme from '../mui/theme.js' 
+import theme from '../mui/theme.js'
 
 const TileLogic = ({ event, user }) => {
   const [userInterests, setUserInterests] = useState({
@@ -149,30 +149,34 @@ const TileLogic = ({ event, user }) => {
     return `${dayOfWeek} ${month} ${day} ${time}`
   }
 
-  let attendingButton = ''
-  let interestedButton = ''
-  if (user !== null) {
-    attendingButton =
-      <ThemeProvider theme={theme}>
-        <Button
-          color={upVoteButtonClass}
-          onClick={isAttendingClickHandler} 
-          variant='contained'
-          size='small'>
-          Attending: {totalInterests.attending}
-        </Button>
-      </ThemeProvider>
-    interestedButton =
-      <ThemeProvider theme={theme}>
-        <Button
-          color={downVoteButtonClass}
-          onClick={isInterestedClickHandler} 
-          variant='contained'
-          size='small'>
-          Interested: {totalInterests.interested}
-        </Button>
-      </ThemeProvider>
-  }
+  const disableButtons = !user ? true : false
+
+  const attendingButton = (
+    <ThemeProvider theme={theme}>
+      <Button
+        color={upVoteButtonClass}
+        onClick={isAttendingClickHandler}
+        variant='contained'
+        size='small'
+        disabled={disableButtons}
+        >
+        Attending: {totalInterests.attending}
+      </Button>
+    </ThemeProvider>
+  )
+  const interestedButton = (
+    <ThemeProvider theme={theme}>
+      <Button
+        color={downVoteButtonClass}
+        onClick={isInterestedClickHandler}
+        variant='contained'
+        size='small'
+        disabled={disableButtons}
+        >
+        Interested: {totalInterests.interested}
+      </Button>
+    </ThemeProvider>
+  )
 
   return (
     <Tile

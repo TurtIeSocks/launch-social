@@ -35,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     backgroundColor: theme.palette.background.paper,
-    minWidth: 320
+    minWidth: 320,
+    border: 'solid 10px #ED1A7A',
+    borderRadius: 16
   },
   pagination: {
         "& > *": {

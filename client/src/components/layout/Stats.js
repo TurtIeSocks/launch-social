@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { ThemeProvider, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import theme from '../mui/theme.js'
 import useStyles from './styling.js'
@@ -22,15 +23,12 @@ const Stats = ({ stats, type }) => {
   let rows
   if (stats !== undefined) {
     rows = stats.map(row => {
-      const url = row[statsLanguage.subType].url ? row[statsLanguage.subType].url 
-        : `https://en.wikipedia.org/wiki/${row[statsLanguage.subType].name}`
-      return createRows(
-        <a target='_blank'
-          key={row[statsLanguage.subType].id}
-          href={url}
-        >
+      const name =
+        <Link to={`/${statsLanguage.subType}/${row[statsLanguage.subType].id}`}>
           {row[statsLanguage.subType].name}
-        </a>, row.total, row[statsLanguage.subType].id
+        </Link>
+      return createRows(
+        name, row.total, row[statsLanguage.subType].id
       )
     })
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { ThemeProvider } from '@material-ui/styles'
 import { AppBar, Grid, Tab, Tabs } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
@@ -10,54 +10,25 @@ import EventTile from '../eventTile/Logic.js'
 import Stats from './Stats.js'
 
 const HomePage = props => {
+const HomePage = ({
+  events,
+  user,
+  handleChange,
+  a11yProps,
+  stats,
+  value,
+  page,
+  handlePaginationChange,
+  paginationPages
+}) => {
   const classes = useStyles()
-  const [events, setEvents] = useState([])
-  const [stats, setStats] = useState(undefined)
-  const [value, setValue] = useState(0)
-  const [page, setPage] = useState(1)
-  const [paginationPages, setPaginationPages] = useState(10)
-
-  const fetchEvents = async () => {
-    try {
-      const response = await fetch(`/api/v1/homepage/${page}`)
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      setEvents(body.events)
-      setStats(body.stats)
-      setPaginationPages(Math.ceil(body.total / 10))
-    } catch (error) {
-      console.error(error.message)
-    }
-  }
-
-  useEffect(() => {
-    fetchEvents()
-  }, [page])
-
-  const a11yProps = (index) => {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    }
-  }
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
-
-  const handlePaginationChange = (event, value) => {
-    setPage(value)
-  }
-
 
   const allEvents = events.map(event => {
     return (
       <Grid item xs={12} key={event.id}>
         <EventTile
           event={event}
-          user={props.user}
+          user={user}
         />
       </Grid>
     )
@@ -75,7 +46,7 @@ const HomePage = props => {
             alignItems="center"
             spacing={2}>
             {allEvents}
-            <Grid item xs={12} sm={7} >
+            <Grid item xs={12} sm={9} md={8} lg={7} xl={5}>
               <div className={classes.pagination}>
                 <Pagination
                   count={paginationPages}

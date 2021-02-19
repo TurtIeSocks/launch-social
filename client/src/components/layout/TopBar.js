@@ -31,7 +31,7 @@ const TopBar = ({ user }) => {
     } else {
       return (
         <a href="/auth/github">
-          <Typography align='center'><AddBox />&nbsp;Add an Event</Typography>
+          <Typography align='center'><AddBox className={classes.add}/>&nbsp;Add an Event</Typography>
         </a>
       )
     }

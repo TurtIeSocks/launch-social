@@ -55,11 +55,12 @@ const Show = ({
               </Grid>
             </Grid>
             <Grid container item xs={12} sm={5}
-              direction="row"
+              direction="column"
               justify="center"
               alignItems="center"
+              className={classes.coverArt}
             >
-              <Grid item xs={12}>
+              <Grid item xs={12} >
                 {editButton}
                 {deleteButton}
               </Grid>

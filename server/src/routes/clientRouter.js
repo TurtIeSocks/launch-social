@@ -10,7 +10,9 @@ const clientRoutes = [
   "/auth/github",
   "/new-event",
   "/events/:id/edit",
-  "/events/:id/delete"
+  "/events/:id/delete",
+  "/game/:id",
+  "/studyTopic/:id"
 ]
 router.get(clientRoutes, (req, res) => {
   res.sendFile(getClientIndexPath())

@@ -32,9 +32,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     display: 'in'
   },
-  username: {
-
-  },
   headers: {
     color: '#33485E',
     fontWeight: 'bold',
@@ -69,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
   },
   coverArt: {
     padding: theme.spacing(2),
-    textAlign: 'center',
     margin: '0 auto'
   },
   buttons: {

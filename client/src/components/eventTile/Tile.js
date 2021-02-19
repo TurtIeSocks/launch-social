@@ -28,7 +28,11 @@ const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiv
           justify="center"
         >
           <Grid item xs={12} sm={8}>
-            <Typography variant='h3' className={classes.heading}>{event.name}</Typography>
+            <Link to={`/events/${event.id}`}>
+              <Typography variant='h3' className={classes.heading}>
+                {event.name}
+              </Typography>
+            </Link>
           </Grid>
           <Grid item xs={8} sm={4}>
             <Typography variant='h2' className={classes.date}>{convertDate(event.startDate)}</Typography>
@@ -37,7 +41,7 @@ const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiv
             <Typography variant='body1' className={classes.body}>{event.description}</Typography>
           </Grid>
           <Grid item xs={3} sm={3}>
-            <Typography variant='h2' className={classes.username} display='inline'><img src={`${event.user.avatarUrl}`} className={classes.avatar}/>{event.user.username}</Typography>
+            <Typography variant='h2' className={classes.username} display='inline'><img src={`${event.user.avatarUrl}`} className={classes.avatar} />{event.user.username}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Divider className={classes.divider} light />

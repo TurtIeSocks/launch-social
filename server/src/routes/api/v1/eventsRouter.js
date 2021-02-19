@@ -2,7 +2,7 @@ import express from "express"
 import objection from "objection"
 const { ValidationError } = objection
 
-import { Event, EventType, StudyTopic, Game, GameImage, GamePlatform, GameVideo, Platform, GameGenre, Genre } from '../../../models/index.js'
+import { Event, EventType, StudyTopic, Game, GameImage, GamePlatform, GameVideo, Platform, GameGenre, Genre, Interest } from '../../../models/index.js'
 import EventSerializer from "../../../serializers/EventSerializer.js"
 import cleanUserInput from "../../../services/cleanUserInput.js"
 import eventInterestsRouter from './eventInterestsRouter.js'
@@ -232,6 +232,9 @@ eventsRouter.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params
 
+    await Interest.query()
+      .where('eventId', id)
+      .delete()
     await Event.query()
       .findById(id)
       .delete()

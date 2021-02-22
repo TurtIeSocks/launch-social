@@ -2,15 +2,16 @@ import { Button, ThemeProvider } from "@material-ui/core"
 import React, { useState, useEffect } from "react"
 import Tile from './Tile'
 import theme from '../mui/theme.js'
+import Fetch from '../../services/fetch/Fetch.js'
 
-const TileLogic = ({ event, user }) => {
+const TileLogic = ({ event: eventDetails, user }) => {
   const [userInterests, setUserInterests] = useState({
     isAttending: false,
     isInterested: false
   })
   const [totalInterests, setTotalInterests] = useState({
-    attending: event.totalAttending.value,
-    interested: event.totalInterests.value
+    attending: eventDetails.totalAttending.value,
+    interested: eventDetails.totalInterests.value
   })
 
   let upVoteButtonClass = 'default'
@@ -33,7 +34,7 @@ const TileLogic = ({ event, user }) => {
   }
 
   useEffect(() => {
-    event.userInterests.forEach(interest => {
+    eventDetails.userInterests.forEach(interest => {
       if (user && interest.userId === user.id) {
         getUserInterestState(interest.value)
       }
@@ -49,63 +50,21 @@ const TileLogic = ({ event, user }) => {
   }
 
   const newInterest = async (interestPayload) => {
-    try {
-      const response = await fetch(`/api/v1/events/${event.id}/interests`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(interestPayload)
-      })
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      getUserInterestState(body.interest.value)
-      setTotalInterests({ attending: body.totalAttending.value, interested: body.totalInterested.value })
-    } catch (error) {
-      console.error(error.message)
-    }
+    const body = await Fetch.newInterest(eventDetails.id, interestPayload)
+    getUserInterestState(body.interest.value)
+    setTotalInterests({ attending: body.totalAttending.value, interested: body.totalInterested.value })
   }
 
   const editInterest = async (interestPayload) => {
-    try {
-      const response = await fetch(`/api/v1/events/${event.id}/interests`, {
-        method: "PATCH",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(interestPayload)
-      })
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      getUserInterestState(body.interest.value)
-      setTotalInterests({ attending: body.totalAttending.value, interested: body.totalInterested.value })
-    } catch (error) {
-      console.error(error.message)
-    }
+    const body = await Fetch.editInterest(eventDetails.id, interestPayload)
+    getUserInterestState(body.interest.value)
+    setTotalInterests({ attending: body.totalAttending.value, interested: body.totalInterested.value })
   }
 
   const removeInterest = async () => {
-    try {
-      const response = await fetch(`/api/v1/events/${event.id}/interests`, {
-        method: "DELETE",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify()
-      })
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      setUserInterests({ isAttending: false, isInterested: false })
-      setTotalInterests({ attending: body.totalAttending.value, interested: body.totalInterested.value })
-    } catch (error) {
-      console.error(error.message)
-    }
+    const body = await Fetch.removeInterest(eventDetails.id)
+    setUserInterests({ isAttending: false, isInterested: false })
+    setTotalInterests({ attending: body.totalAttending.value, interested: body.totalInterested.value })
   }
 
   const isAttendingClickHandler = (event) => {
@@ -126,7 +85,7 @@ const TileLogic = ({ event, user }) => {
     } else if (userInterests.isInterested) {
       removeInterest()
     } else {
-      newInterest({ value: 'interested' })
+      newInterest({ value: 'attending' })
     }
   }
 
@@ -159,7 +118,7 @@ const TileLogic = ({ event, user }) => {
         variant='contained'
         size='small'
         disabled={disableButtons}
-        >
+      >
         Attending: {totalInterests.attending}
       </Button>
     </ThemeProvider>
@@ -172,7 +131,7 @@ const TileLogic = ({ event, user }) => {
         variant='contained'
         size='small'
         disabled={disableButtons}
-        >
+      >
         Interested: {totalInterests.interested}
       </Button>
     </ThemeProvider>
@@ -180,7 +139,7 @@ const TileLogic = ({ event, user }) => {
 
   return (
     <Tile
-      event={event}
+      event={eventDetails}
       user={user}
       attending={attendingButton}
       interested={interestedButton}

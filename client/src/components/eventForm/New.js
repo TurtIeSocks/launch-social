@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from "react-router-dom"
-import translateServerErrors from "../../services/translateServerErrors.js"
 import Logic from './Logic.js'
+import Fetch from '../../services/fetch/Fetch.js' 
 
 const currentDate = new Date
 
@@ -25,31 +25,9 @@ const NewEvent = props => {
   })
 
   const addNewEvent = async (eventPayload) => {
-    try {
-      const response = await fetch(`/api/v1/events/`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(eventPayload),
-      })
-      if (!response.ok) {
-        if (response.status === 422) {
-          const body = await response.json()
-          const newErrors = translateServerErrors(body.errors)
-          setErrors(newErrors)
-        } else {
-          const errorMessage = `${response.status} (${response.statusText})`
-          const error = new Error(errorMessage)
-          throw error
-        }
-      } else {
-        setErrors([])
-        setShouldRedirect(true)
-      }
-    } catch (error) {
-      console.error(`Error in fetch: ${error.message}`)
-    }
+    const body = await Fetch.newEvent(eventPayload)
+    console.log(body)
+    body ? setErrors(body) : setShouldRedirect(true)
   }
 
   if (shouldRedirect) {

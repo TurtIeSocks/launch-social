@@ -4,6 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import { Grid, Typography, Button } from '@material-ui/core'
 import theme from '../mui/theme.js'
 import useStyles from './styling.js' 
+import Fetch from '../../services/fetch/Fetch.js'
 
 const DeleteEvent = props => {
   const classes = useStyles()
@@ -15,17 +16,8 @@ const DeleteEvent = props => {
   const { id: eventId } = props.match.params
 
   const deleteEvent = async () => {
-    try {
-      const response = await fetch(`/api/v1/events/${eventId}`, {
-        method: "DELETE",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        })
-      })
-      setShouldRedirect({ enable: true, where: '/' })
-    } catch (error) {
-      console.error(`Error in fetch: ${error.message}`)
-    }
+    await Fetch.deleteEvent(eventId)
+    setShouldRedirect({ enable: true, where: '/' })
   }
 
   const goBack = () => {

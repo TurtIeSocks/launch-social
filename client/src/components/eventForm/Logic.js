@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Fetch from '../../services/fetch/Fetch.js'
 import Form from './Form.js'
 
 const FormLogic = ({
@@ -13,27 +14,9 @@ const FormLogic = ({
   const [studyTopics, setStudyTopics] = useState([])
 
   const fetchTypesAndTopics = async () => {
-    try {
-      const response = await fetch(`/api/v1/basics`)
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      const eventTypes = body.eventTypes.map(eventType => {
-        return { key: eventType.id, label: eventType.name, value: eventType.id }
-      })
-      setEventTypes([{ key: 0, label: "Select One", value: 0 }, ...eventTypes])
-
-      const studyTopics = body.studyTopics.map(topic => {
-        return {
-          label: topic.name,
-          value: topic.id
-        }
-      })
-      setStudyTopics(studyTopics)
-    } catch (error) {
-      console.error(error.message)
-    }
+    const body = await Fetch.typesAndTopics()
+    setEventTypes([{ key: 0, label: "Select One", value: 0 }, ...body.eventTypes])
+    setStudyTopics(body.studyTopics)
   }
 
   const loadGames = (inputValue) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from "react-router-dom"
 import HomePage from './HomePage.js'
+import Fetch from '../../services/fetch/Fetch.js'
 
 const HomeLogic = ({ user }) => {
   const [events, setEvents] = useState([])
@@ -10,18 +11,10 @@ const HomeLogic = ({ user }) => {
   const [paginationPages, setPaginationPages] = useState(10)
 
   const fetchAllEvents = async () => {
-    try {
-      const response = await fetch(`/api/v1/homepage/${page}`)
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      setEvents(body.events)
-      setStats(body.stats)
-      setPaginationPages(Math.ceil(body.total / 10))
-    } catch (error) {
-      console.error(error.message)
-    }
+    const body = await Fetch.fetchAllEvents(page)
+    setEvents(body.events)
+    setStats(body.stats)
+    setPaginationPages(Math.ceil(body.total / 10))
   }
 
   useEffect(() => {

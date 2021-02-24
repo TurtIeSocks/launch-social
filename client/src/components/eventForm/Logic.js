@@ -20,7 +20,7 @@ const FormLogic = ({
   }
 
   const loadGames = (inputValue) => {
-    return fetch(`/api/v1/games/names?search=${inputValue}`).then(res => res.json())
+    return Fetch.fetchGames(inputValue)
   }
 
   useEffect(() => {

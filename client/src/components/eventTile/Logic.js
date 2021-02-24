@@ -34,11 +34,9 @@ const TileLogic = ({ event: eventDetails, user }) => {
   }
 
   useEffect(() => {
-    eventDetails.userInterests.forEach(interest => {
-      if (user && interest.userId === user.id) {
-        getUserInterestState(interest.value)
+      if (user && eventDetails.userInterests) {
+        getUserInterestState(eventDetails.userInterests.value)
       }
-    })
   }, [])
 
   const getUserInterestState = value => {
@@ -91,10 +89,10 @@ const TileLogic = ({ event: eventDetails, user }) => {
 
   const getThumbnail = (event) => {
     let thumbnail = 'https://image.freepik.com/free-vector/hand-with-pen-mark-calendar_1325-126.jpg'
-    if (event.gameDetails) {
-      thumbnail = `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.gameDetails.coverArt}.jpg`
+    if (event.coverArt) {
+      thumbnail = `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.coverArt}.jpg`
     } else if (event.studyTopic) {
-      thumbnail = event.studyTopic.imageUrl
+      thumbnail = event.studyTopic
     }
     return thumbnail
   }

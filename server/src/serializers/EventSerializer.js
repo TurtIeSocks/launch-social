@@ -22,10 +22,10 @@ class EventSerializer {
     const eventType = await event.$relatedQuery('eventType')
     serializedEvent.eventType = await EventTypeSerializer.getOne(eventType)
 
-    if (serializedEvent.eventType.id == 1) {
+    if (event.gameId) {
       const game = await event.$relatedQuery('game')
       serializedEvent.gameDetails = await GameSerializer.getOne(game)
-    } else if (serializedEvent.eventType.id == 2) {
+    } else if (event.studyTopicId) {
       const studyTopic = await event.$relatedQuery('studyTopic')
       serializedEvent.studyTopic = await StudyTopicSerializer.getOne(studyTopic)
     }
@@ -43,13 +43,59 @@ class EventSerializer {
       .andWhere('value', 'interested')
       .count({ value: 'value' })
       .first()
-
+      
     return serializedEvent
   }
 
-  static async getAll(events) {
+  static async getHomepage(event, userId) {
+    const allowedAttributes = ["id", "name", "description", "startDate", "endDate"]
+
+    const serializedEvent = {}
+
+    for (const attribute of allowedAttributes) {
+      serializedEvent[attribute] = event[attribute]
+    }
+
+    const user = await event.$relatedQuery('user')
+    serializedEvent.user = await UserSerializer.getOne(user)
+
+    if (userId) {
+      const userInterest = await event.$relatedQuery('interests')
+        .where('userId', userId)
+        .first()
+      if (userInterest) {
+        serializedEvent.userInterests = await InterestSerializer.getOne(userInterest)
+      }
+    } else {
+      const userInterests = await event.$relatedQuery('interests')
+      serializedEvent.userInterests = await InterestSerializer.getAll(userInterests)
+    }
+
+    if (event.gameId) {
+      const game = await event.$relatedQuery('game')
+      serializedEvent.coverArt = await GameSerializer.homepage(game)
+    } else if (event.studyTopicId) {
+      const studyTopic = await event.$relatedQuery('studyTopic')
+      serializedEvent.studyTopic = await StudyTopicSerializer.homepage(studyTopic)
+    }
+
+    serializedEvent.totalAttending = await Interest.query()
+      .where('eventId', event.id)
+      .andWhere('value', 'attending')
+      .count({ value: 'value' })
+      .first()
+
+    serializedEvent.totalInterests = await Interest.query()
+      .where('eventId', event.id)
+      .andWhere('value', 'interested')
+      .count({ value: 'value' })
+      .first()
+    return serializedEvent
+  }
+
+  static async getAllHomepage(events, userId) {
     return await Promise.all(events.map(async event => {
-      const serializedEvent = await EventSerializer.getOne(event)
+      const serializedEvent = await EventSerializer.getHomepage(event, userId)
       return serializedEvent
     }))
   }

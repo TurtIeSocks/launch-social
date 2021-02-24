@@ -7,14 +7,16 @@ const homepageRouter = new express.Router()
 
 homepageRouter.get("/:page", async (req, res) => {
   try {
+
     const currentDate = (new Date).getTime()
+    const userId = req.user ? req.user.id : false
     const events = await Event.query()
       .where('endDate', '>', currentDate)
       .page(req.params.page-1, 10)
       .orderBy(['startDate', 'endDate'])
-    const serializedEvents = await EventSerializer.getAll(events.results)
+    const serializedEvents = await EventSerializer.getAllHomepage(events.results, userId)
     const stats = await EventSerializer.getStats()
-    res.status(200).json({ total: events.total, events: serializedEvents, stats: stats })
+    res.status(200).json({ total: events.total, events: serializedEvents, stats })
   } catch (error) {
     res.status(500).json({ error: error })
   }

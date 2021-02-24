@@ -1,3 +1,5 @@
+import GameMediaSerializer from './GameMediaSerializer.js' 
+
 class GameSerializer {
   static async getOne(game) {
     const allowedAttributes = ["apiId","name", "summary", "maxPlayers", "coverArt", "url"]
@@ -9,16 +11,16 @@ class GameSerializer {
     }
 
     const images = await game.$relatedQuery('gameImages')
-    serializedGame.images = await GameSerializer.getAllImages(images)
+    serializedGame.images = await GameMediaSerializer.getAllImages(images)
 
     const videos = await game.$relatedQuery('gameVideos')
-    serializedGame.videos = await GameSerializer.getAllVideos(videos)
+    serializedGame.videos = await GameMediaSerializer.getAllVideos(videos)
 
     const platforms = await game.$relatedQuery('gamePlatforms')
-    serializedGame.platforms = await GameSerializer.getAllPlatforms(platforms)
+    serializedGame.platforms = await GameMediaSerializer.getAllPlatforms(platforms)
 
     const genres = await game.$relatedQuery('gameGenres')
-    serializedGame.genres = await GameSerializer.getAllGenres(genres)
+    serializedGame.genres = await GameMediaSerializer.getAllGenres(genres)
 
     return serializedGame
   }
@@ -30,79 +32,9 @@ class GameSerializer {
     }))
   }
 
-  static async getImage(image) {
-    const allowedAttributes = ["imageId"]
-
-    const serializedImages = {}
-
-    for (const attribute of allowedAttributes) {
-      serializedImages[attribute] = image[attribute]
-    }
-    return serializedImages
+  static async homepage(game) {
+    return game.coverArt
   }
-
-  static async getAllImages(images) {
-    return await Promise.all(images.map(async image => {
-      const serializedImage = await GameSerializer.getImage(image)
-      return serializedImage
-    }))
-  }
-
-  static async getVideo(video) {
-    const allowedAttributes = ["videoId"]
-
-    const serializedVideo = {}
-
-    for (const attribute of allowedAttributes) {
-      serializedVideo[attribute] = video[attribute]
-    }
-    return serializedVideo
-  }
-
-  static async getAllVideos(videos) {
-    return await Promise.all(videos.map(async video => {
-      const serializedVideo = await GameSerializer.getVideo(video)
-      return serializedVideo
-    }))
-  }
-
-  static async getPlatform(platform) {
-    const allowedAttributes = ["name", "imageId"]
-    
-    const serializedPlatform = {}
-
-    for (const attribute of allowedAttributes) {
-      serializedPlatform[attribute] = platform[attribute]
-    }
-    return serializedPlatform
-  }
-
-  static async getAllPlatforms(platforms) {
-    return await Promise.all(platforms.map(async platform => {
-      const serializedPlatform = await GameSerializer.getPlatform(platform)
-      return serializedPlatform
-    }))
-  }
-
-  static async getGenre(genre) {
-    const allowedAttributes = ["name"]
-    
-    const serializedGenre = {}
-
-    for (const attribute of allowedAttributes) {
-      serializedGenre[attribute] = genre[attribute]
-    }
-    return serializedGenre
-  }
-
-  static async getAllGenres(genres) {
-    return await Promise.all(genres.map(async genre => {
-      const serializedGenre = await GameSerializer.getGenre(genre)
-      return serializedGenre
-    }))
-  }
-
-
 }
 
 export default GameSerializer

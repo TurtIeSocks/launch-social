@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from "react-router-dom"
 import { ThemeProvider } from '@material-ui/styles'
-import { AppBar, Grid, Tab, Tabs } from '@material-ui/core'
+import { AppBar, Grid, Tab, Tabs, Button, Paper, Typography } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
 
 import TabPanel from './TabPanel.js'
@@ -8,6 +9,9 @@ import theme from '../mui/theme.js'
 import useStyles from './styling.js'
 import EventTile from '../eventTile/Logic.js'
 import Stats from './Stats.js'
+
+import Carousel from 'react-material-ui-carousel'
+import splashImage from '../../../public/splash.png'
 
 const HomePage = ({
   events,
@@ -21,6 +25,7 @@ const HomePage = ({
   paginationPages
 }) => {
   const classes = useStyles()
+  const [carouselImages, setCarouselImages] = useState([])
 
   const allEvents = events.map(event => {
     return (
@@ -33,12 +38,101 @@ const HomePage = ({
     )
   })
 
+  const generateCarouselImages = () => {
+    const currentDate = (new Date).getTime()
+    const images = [
+      <Grid container
+        key={0}
+        style={{ backgroundImage: `url(${splashImage})` }}
+        direction="row"
+        justify="center"
+        alignItems="center"
+        className={classes.carouselImage}>
+        <Grid container item xs={11} sm={10}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          className={classes.carouselSplash}>
+          <Grid item xs={12}>
+            <Typography variant='h2' className={classes.splashTitle}>
+              Welcome to Launch Social!
+            </Typography>
+          </Grid>
+          <Grid item xs={6}
+            className={classes.carouselTitle}>
+            <Typography variant='h6' className={classes.splashTitle}>
+              The place to coordinate social events and study sessions with your fellow launchers!
+            </Typography>
+          </Grid>
+          <Grid item xs={6}
+            className={classes.carouselTitle}>
+            <Typography variant='h6' className={classes.splashTitle}>
+              You'll be able to create events and indicate whether you're interested or plan to attend events once you sign in.
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+    ]
+    if (allEvents) {
+      events.forEach(event => {
+        if ((event.startDate < currentDate && event.endDate > currentDate) || event.featured) {
+          const image = event.coverArt
+            ? `https://images.igdb.com/igdb/image/upload/t_original/${event.coverArt}.jpg`
+            : event.studyTopic
+          images.push(
+            <Grid container
+              key={image}
+              style={{ backgroundImage: `url(${image})` }}
+              direction="row"
+              justify="center"
+              alignItems="flex-end"
+              className={classes.carouselImage}>
+              <Grid container item xs={12}
+                direction="row"
+                justify="center"
+                alignItems="center"
+                className={classes.carouselFeatured}>
+                <Grid item xs={12} sm={9}>
+                  <Typography variant='h4' className={classes.title}>
+                    {event.name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={3}>
+                  <Link to={`/events/${event.id}`}>
+                    <Button color='primary'>
+                      <Typography variant='h6' className={classes.title}>
+                        Event Details
+                      </Typography>
+                    </Button>
+                  </Link>
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
+      })
+      setCarouselImages(images)
+    }
+  }
+
+  useEffect(() => {
+    generateCarouselImages()
+  }, [events])
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root} >
         <Grid container
           justify="center"
           spacing={2}>
+          <Grid item xs={10}>
+            <Carousel
+              interval={10000}
+              swipe
+              next={() => { }}
+              prev={() => { }}>
+              {carouselImages}
+            </Carousel>
+          </Grid>
           <Grid container item sm={12} md={8} lg={7}
             direction="row"
             justify="center"

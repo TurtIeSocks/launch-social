@@ -22,9 +22,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     textAlign: 'center'
   },
-  add: {
-    paddingTop: theme.spacing(1)
-  },
+
   table: {
     minWidth: 225,
   },
@@ -40,15 +38,43 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 16
   },
   pagination: {
-        "& > *": {
+    "& > *": {
       justifyContent: "center",
-      display:'flex'
+      display: 'flex'
     },
     backgroundColor: 'white',
     borderRadius: 16,
     minHeight: 25,
     padding: 10,
     margin: '0 auto'
+  },
+  carouselImage: {
+    height: 500,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    border: 'solid 5px #33485E',
+    borderRadius: theme.spacing(3)
+  },
+  splashTitle: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    margin: theme.spacing(2),
+    color: 'white'
+  },
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    margin: theme.spacing(2),
+  },
+  carouselSplash: {
+    backgroundColor: 'rgba(237,26,122, 0.5)',
+    borderRadius: theme.spacing(2)
+  },
+  carouselFeatured: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderBottomLeftRadius: theme.spacing(2),
+    borderBottomRightRadius: theme.spacing(2)
   }
 }))
 

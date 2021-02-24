@@ -25,13 +25,13 @@ const TopBar = ({ user }) => {
     if (user) {
       return (
         <Link to="/new-event" className={classes.link}>
-          <Typography align='center'><AddBox className={classes.add} />&nbsp;Add an Event</Typography>
+          <Typography variant='h5' align='center'><AddBox />&nbsp;Add an Event</Typography>
         </Link>
       )
     } else {
       return (
         <a href="/auth/github">
-          <Typography align='center'><AddBox className={classes.add}/>&nbsp;Add an Event</Typography>
+          <Typography variant='h5' align='center'><AddBox />&nbsp;Add an Event</Typography>
         </a>
       )
     }
@@ -106,9 +106,9 @@ const TopBar = ({ user }) => {
               </Grid>
               <Grid item xs={3} >
                 <Link to="/" className={classes.link}>
-                  <Typography variant="h6" align='left' >
+                  <Typography variant="h4" align='left' >
                     Launch Social
-                    </Typography>
+                  </Typography>
                 </Link>
               </Grid>
               <Grid item xs={4} >

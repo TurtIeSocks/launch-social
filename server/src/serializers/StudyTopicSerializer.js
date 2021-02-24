@@ -9,11 +9,16 @@ class StudyTopicSerializer {
 
     return serializedStudyTopic
   }
+
   static async getAll(studyTopics) {
     return await Promise.all(studyTopics.map(async studyTopic => {
       const serializedStudyTopic = await StudyTopicSerializer.getOne(studyTopic)
       return serializedStudyTopic
     }))
+  }
+
+  static async homepage(studyTopic) {
+    return studyTopic.imageUrl
   }
 }
 

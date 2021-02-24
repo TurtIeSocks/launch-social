@@ -26,7 +26,6 @@ const NewEvent = props => {
 
   const addNewEvent = async (eventPayload) => {
     const body = await Fetch.newEvent(eventPayload)
-    console.log(body)
     body ? setErrors(body) : setShouldRedirect(true)
   }
 

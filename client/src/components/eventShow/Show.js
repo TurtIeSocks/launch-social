@@ -4,10 +4,11 @@ import { Grid, Divider, Typography } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
 import theme from '../mui/theme.js'
 import useStyles from './styling.js'
+import CommentLogic from "../comments/Logic.js"
 
 const Show = ({
-  event,
-  game,
+  thisEvent,
+  setThisEvent,
   carouselImages,
   carouselVideos,
   getDate,
@@ -20,7 +21,10 @@ const Show = ({
   editButton,
   deleteButton,
   getGameSummary,
-  getGenres
+  getGenres,
+  commentState,
+  setCommentState,
+  user
 }) => {
   const classes = useStyles()
 
@@ -45,10 +49,10 @@ const Show = ({
               alignItems="center"
             >
               <Grid item xs={8} sm={9}>
-                <Typography variant='h2' className={classes.title}>{event.name}</Typography>
+                <Typography variant='h2' className={classes.title}>{thisEvent.name}</Typography>
               </Grid>
               <Grid item xs={4} sm={3}>
-                {event.startDate && getDate(event.startDate, event.endDate)}
+                {thisEvent.startDate && getDate(thisEvent.startDate, thisEvent.endDate)}
               </Grid>
               <Grid item xs={12}>
                 <Divider className={classes.divider} light />
@@ -65,8 +69,8 @@ const Show = ({
                 {deleteButton}
               </Grid>
               <Grid item xs={12}>
-                <a href={`${getUrl(event.eventTypeId)}`} target="_blank">
-                  <img src={getCoverArt(event.eventTypeId)} className={classes.coverArt} />
+                <a href={`${getUrl(thisEvent.eventTypeId)}`} target="_blank">
+                  <img src={getCoverArt(thisEvent.eventTypeId)} className={classes.coverArt} />
                 </a>
               </Grid>
             </Grid>
@@ -78,7 +82,7 @@ const Show = ({
             >
               <Grid item xs={12}>
                 <Typography variant='body1' className={classes.eventDescription}>
-                  {event.description}
+                  {thisEvent.description}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -88,18 +92,18 @@ const Show = ({
                 <Typography variant='h6' className={classes.headers}>
                   Host:
                 </Typography>
-                {event.user && getEventCreator(event)}
+                {thisEvent.user && getEventCreator(thisEvent)}
               </Grid>
               <Grid item xs={6}>
                 <Typography variant='h6' className={classes.headers}>
                   Location:
                   </Typography>
                 <Typography variant='subtitle1' display='inline'>
-                  {event.location && event.location}
+                  {thisEvent.location && thisEvent.location}
                 </Typography>
                 <Typography variant='subtitle1' display='inline'>
-                  {event.meetUrl && ' / '}
-                  {event.meetUrl && getMeetUrl(event.meetUrl)}
+                  {thisEvent.meetUrl && ' / '}
+                  {thisEvent.meetUrl && getMeetUrl(thisEvent.meetUrl)}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -107,14 +111,14 @@ const Show = ({
               </Grid>
               <Grid item xs={6}>
                 <Typography variant='h6' className={classes.headers}>Attending:</Typography>
-                {event.userInterests && getInterestedUsers(event, 'attending')}
+                {thisEvent.userInterests && getInterestedUsers(thisEvent, 'attending')}
               </Grid>
               <Grid item x={6}>
                 <Typography variant='h6' className={classes.headers}>Interested:</Typography>
-                {event.userInterests && getInterestedUsers(event, 'interested')}
+                {thisEvent.userInterests && getInterestedUsers(thisEvent, 'interested')}
               </Grid>
             </Grid>
-            {game && <>
+            {thisEvent.gameDetails && <>
               <Grid container item xs={12}
                 direction="row"
                 justify="center"
@@ -128,7 +132,7 @@ const Show = ({
                   <Typography variant='h6' className={classes.headers}>
                     Game Summary:
                   </Typography>
-                  <Typography variant='body2' className={classes.gameSummary}>{getGameSummary(event)}</Typography>
+                  <Typography variant='body2' className={classes.gameSummary}>{getGameSummary(thisEvent)}</Typography>
                 </Grid>
                 <Grid container item xs={12} sm={6}
                   direction="row"
@@ -141,7 +145,7 @@ const Show = ({
                       Genres:
                   </Typography>
                   </Grid>
-                  {game && game.genres && getGenres(event)}
+                  {getGenres(thisEvent.gameDetails.genres)}
                   <Grid item xs={12}>
                     <Divider className={classes.divider} light />
                   </Grid>
@@ -150,7 +154,7 @@ const Show = ({
                       Platforms:
                   </Typography>
                   </Grid>
-                  {game && game.platforms && getPlatforms(game.platforms)}
+                  {getPlatforms(thisEvent.gameDetails.platforms)}
                 </Grid>
                 <Grid item xs={12}>
                   <Divider className={classes.divider} light />
@@ -162,24 +166,32 @@ const Show = ({
                 alignItems="center"
               >
                 <Grid item xs={12} md={5} className={classes.media}>
-                  <Carousel
-                    swipe
-                    next={() => { }}
-                    prev={() => { }}>
+                  <Carousel>
                     {carouselImages}
                   </Carousel>
                 </Grid>
                 <Grid item xs={12} md={5} className={classes.media}>
                   <Carousel
                     autoPlay={false}
-                    swipe
-                    next={() => { }}
-                    prev={() => { }}>
+                  >
                     {carouselVideos}
                   </Carousel>
                 </Grid>
               </Grid>
             </>}
+            <Grid item xs={12}>
+              <Divider className={classes.divider} light />
+            </Grid>
+            <Grid item xs={12} sm={10}
+            >
+              <CommentLogic
+                thisEvent={thisEvent}
+                setThisEvent={setThisEvent}
+                commentState={commentState}
+                setCommentState={setCommentState}
+                user={user}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </div>

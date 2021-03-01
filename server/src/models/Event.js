@@ -25,7 +25,7 @@ class Event extends Model {
     }
   }
   static get relationMappings() {
-    const { EventType, Game, User, Interest, StudyTopic } = require('./index.js')
+    const { EventType, Game, User, Interest, StudyTopic, Comment } = require('./index.js')
 
     return {
       eventType: {
@@ -80,6 +80,14 @@ class Event extends Model {
           to: 'studyTopics.id'
         }
       },
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'events.id',
+          to: 'comments.eventId'
+        }
+      }
     }
   }
 }

@@ -11,5 +11,6 @@ const GameGenre = require('./games/GameGenre.js')
 const Genre = require('./games/Genre.js')
 const Interest = require('./Interest.js')
 const StudyTopic = require('./StudyTopic.js')
+const Comment = require('./Comment.js')
 
-module.exports = { User, Event, EventType, Game, GameImage, GameVideo, GamePlatform, Platform, GameGenre, Genre, Interest, StudyTopic }
+module.exports = { User, Event, EventType, Game, GameImage, GameVideo, GamePlatform, Platform, GameGenre, Genre, Interest, StudyTopic, Comment }

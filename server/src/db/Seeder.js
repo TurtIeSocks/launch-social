@@ -5,6 +5,7 @@ import EventSeeder from "./seeders/EventSeeder.js"
 import UserSeeder from "./seeders/UserSeeder.js"
 import InterestSeeder from "./seeders/InterestSeeder.js"
 import StudyTopicSeeder from "./seeders/StudyTopicsSeeder.js"
+import CommentSeeder from "./seeders/CommentSeeder.js"
 
 class Seeder {
   static async seed() {
@@ -26,6 +27,9 @@ class Seeder {
 
     console.log("seeding interests")
     await InterestSeeder.seed()
+    
+    console.log("seeding comments")
+    await CommentSeeder.seed() 
     
     console.log("Done!")
     await connection.destroy()

@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 const Model = require("./Model")
 
 class User extends Model {
@@ -8,7 +6,7 @@ class User extends Model {
   }
 
   static get relationMappings() {
-    const { Event, Interest } = require('./index.js')
+    const { Event, Interest, Comment } = require('./index.js')
 
     return {
       createdEvents: {
@@ -37,6 +35,14 @@ class User extends Model {
         join: {
           from: 'users.id',
           to: 'interests.userId'
+        }
+      },
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'users.id',
+          to: 'comments.userId'
         }
       }
     }

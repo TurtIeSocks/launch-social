@@ -3,8 +3,9 @@ import EventTypeSerializer from "./EventTypeSerializer.js"
 import InterestSerializer from "./InterestSerializer.js"
 import UserSerializer from "./UserSerializer.js"
 import StudyTopicSerializer from './StudyTopicSerializer.js'
+import CommentSerializer from './CommentSerializer.js'
 
-import { Interest, Event } from '../models/index.js'
+import { Interest, Event, Comment } from '../models/index.js'
 
 class EventSerializer {
   static async getOne(event) {
@@ -33,17 +34,9 @@ class EventSerializer {
     const userInterests = await event.$relatedQuery('interests')
     serializedEvent.userInterests = await InterestSerializer.getAll(userInterests)
 
-    serializedEvent.totalAttending = await Interest.query()
-      .where('eventId', serializedEvent.id)
-      .andWhere('value', 'attending')
-      .count({ value: 'value' })
-      .first()
-    serializedEvent.totalInterests = await Interest.query()
-      .where('eventId', serializedEvent.id)
-      .andWhere('value', 'interested')
-      .count({ value: 'value' })
-      .first()
-      
+    const comments = await event.$relatedQuery('comments').orderBy('createdAt')
+    serializedEvent.comments = await CommentSerializer.getAll(comments)
+
     return serializedEvent
   }
 
@@ -90,6 +83,12 @@ class EventSerializer {
       .andWhere('value', 'interested')
       .count({ value: 'value' })
       .first()
+
+    serializedEvent.totalComments = await Comment.query()
+      .where('eventId', event.id)
+      .count({ value: 'comment' })
+      .first()
+
     return serializedEvent
   }
 

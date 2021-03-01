@@ -12,9 +12,9 @@ class EventSeeder {
     }
 
     const timeGenerator = () => {
-      const eventLength = rng(0, 2)
+      const eventLength = rng(0, 10)
       const start = rng((new Date).getTime(), 5097600000)
-      const end = eventLength ? rng(start, 5097600000) : rng(start, 43200000)
+      const end = eventLength ? rng(start, 21600000) : rng(start, 5097600000)
 
       return { start, end }
     }

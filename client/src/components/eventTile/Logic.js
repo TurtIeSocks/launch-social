@@ -1,4 +1,4 @@
-import { Button, ThemeProvider } from "@material-ui/core"
+import { Button, ThemeProvider, Tooltip } from "@material-ui/core"
 import React, { useState, useEffect } from "react"
 import Tile from './Tile'
 import theme from '../mui/theme.js'
@@ -34,9 +34,9 @@ const TileLogic = ({ event: eventDetails, user }) => {
   }
 
   useEffect(() => {
-      if (user && eventDetails.userInterests) {
-        getUserInterestState(eventDetails.userInterests.value)
-      }
+    if (user && eventDetails.userInterests) {
+      getUserInterestState(eventDetails.userInterests.value)
+    }
   }, [])
 
   const getUserInterestState = value => {
@@ -107,31 +107,41 @@ const TileLogic = ({ event: eventDetails, user }) => {
   }
 
   const disableButtons = !user ? true : false
+  const attendingToolTip = user ? 'Planning to Attend?' : 'Sign in to Use'
+  const interestedToolTip = user ? 'Interested?' : 'Sign in to Use'
 
   const attendingButton = (
     <ThemeProvider theme={theme}>
-      <Button
-        color={upVoteButtonClass}
-        onClick={isAttendingClickHandler}
-        variant='contained'
-        size='small'
-        disabled={disableButtons}
-      >
-        Attending: {totalInterests.attending}
-      </Button>
+      <Tooltip title={attendingToolTip}>
+        <span>
+          <Button
+            color={upVoteButtonClass}
+            onClick={isAttendingClickHandler}
+            variant='contained'
+            size='small'
+            disabled={disableButtons}
+          >
+            Attending: {totalInterests.attending}
+          </Button>
+        </span>
+      </Tooltip>
     </ThemeProvider>
   )
   const interestedButton = (
     <ThemeProvider theme={theme}>
-      <Button
-        color={downVoteButtonClass}
-        onClick={isInterestedClickHandler}
-        variant='contained'
-        size='small'
-        disabled={disableButtons}
-      >
-        Interested: {totalInterests.interested}
-      </Button>
+      <Tooltip title={interestedToolTip}>
+        <span>
+          <Button
+            color={downVoteButtonClass}
+            onClick={isInterestedClickHandler}
+            variant='contained'
+            size='small'
+            disabled={disableButtons}
+          >
+            Interested: {totalInterests.interested}
+          </Button>
+        </span>
+      </Tooltip>
     </ThemeProvider>
   )
 

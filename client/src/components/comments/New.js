@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { Grid, TextField, Button } from '@material-ui/core'
+import { Grid, TextField, Button, Tooltip } from '@material-ui/core'
 import theme from '../mui/theme.js'
 import useStyles from './styling.js'
 import Fetch from '../../services/fetch/Fetch.js'
 
-const NewComment = ({ thisEvent, setThisEvent }) => {
+const NewComment = ({ thisEvent, setThisEvent, user }) => {
   const classes = useStyles()
   const [commentRecord, setCommentRecord] = useState({
     comment: ""
@@ -13,7 +13,7 @@ const NewComment = ({ thisEvent, setThisEvent }) => {
 
   const newComment = async (commentPayload) => {
     const body = await Fetch.newComment(thisEvent.id, commentPayload)
-    setThisEvent({ ...thisEvent, comments: [...thisEvent.comments, body.comment] }) 
+    setThisEvent({ ...thisEvent, comments: [...thisEvent.comments, body.comment] })
   }
 
   const handleChange = (event) => {
@@ -29,11 +29,14 @@ const NewComment = ({ thisEvent, setThisEvent }) => {
     setCommentRecord({ comment: "" })
   }
 
+  const isDisabled = !user ? true : false
+  const toolTipText = user ? 'Submit New Comment' : 'Sign in to Use'
+
   return (
     <ThemeProvider theme={theme}>
       <form onSubmit={onSubmitHandler}
-      autoComplete='off'
-      className={classes.formSpacing}
+        autoComplete='off'
+        className={classes.formSpacing}
       >
         <Grid container
           direction="row"
@@ -46,15 +49,20 @@ const NewComment = ({ thisEvent, setThisEvent }) => {
               fullWidth={true}
               name="comment"
               id="outlined-comment"
-              label="Leave a Comment..."
+              helperText={user ? "Leave a Comment..." : 'Sign in to add a Comment'}
               value={commentRecord.comment}
               onChange={handleChange}
+              disabled={isDisabled}
             />
           </Grid>
           <Grid item xs={2}>
-            <Button variant="contained" color="secondary" type="submit">
-              Submit
-            </Button>
+            <Tooltip title={toolTipText}>
+              <span>
+                <Button variant="contained" color="secondary" type="submit" disabled={isDisabled}>
+                  Submit
+                </Button>
+              </span>
+            </Tooltip>
           </Grid>
         </Grid>
       </form>

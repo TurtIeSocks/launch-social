@@ -6,8 +6,9 @@ import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos'
 import { usePushingGutterStyles } from '@mui-treasury/styles/gutter/pushing'
 import { useLabelIconStyles } from '@mui-treasury/styles/icon/label'
 import { useRowFlexStyles } from '@mui-treasury/styles/flex/row'
-import { Grid, Avatar, Card, CardContent, CardMedia, Divider, Typography } from '@material-ui/core'
+import { Grid, Card, CardContent, CardMedia, Divider, Typography } from '@material-ui/core'
 import useStyles from './styling.js'
+import { Comment } from '@material-ui/icons'
 
 const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiveEvent }) => {
   const classes = useStyles()
@@ -34,14 +35,26 @@ const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiv
               </Typography>
             </Link>
           </Grid>
-          <Grid item xs={8} sm={4}>
+          <Grid item xs={12} sm={4}>
             <Typography variant='h2' className={classes.date}>{convertDate(event.startDate)}</Typography>
           </Grid>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={7} md={8}>
             <Typography variant='body1' className={classes.body}>{event.description}</Typography>
           </Grid>
-          <Grid item xs={3} sm={3}>
-            <Typography variant='h2' className={classes.username} display='inline'><img src={`${event.user.avatarUrl}`} className={classes.avatar} />{event.user.username}</Typography>
+          <Grid item xs={3} sm={3} md={3}>
+            <Typography variant='h2' className={classes.username} display='inline'>
+              <img src={`${event.user.avatarUrl}`} className={classes.avatar} />
+              {event.user.username}
+            </Typography>
+          </Grid>
+          <Grid item xs={3} sm={2} md={1}>
+            <Typography variant='body1' display='inline' className={classes.body}>
+              <Comment
+                color='primary'
+                style={{ fontSize: 15 }}
+                />
+              &nbsp;{event.totalComments.value}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Divider className={classes.divider} light />

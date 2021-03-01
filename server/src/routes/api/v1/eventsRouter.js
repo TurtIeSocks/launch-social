@@ -6,6 +6,7 @@ import { Event, EventType, StudyTopic, Game, GameImage, GamePlatform, GameVideo,
 import EventSerializer from "../../../serializers/EventSerializer.js"
 import cleanUserInput from "../../../services/cleanUserInput.js"
 import eventInterestsRouter from './eventInterestsRouter.js'
+import eventCommentsRouter from './eventsCommentsRouter.js' 
 
 const eventsRouter = new express.Router()
 
@@ -248,5 +249,7 @@ eventsRouter.delete("/:id", async (req, res) => {
 })
 
 eventsRouter.use('/:eventId/interests', eventInterestsRouter)
+
+eventsRouter.use('/:eventId/comments', eventCommentsRouter)
 
 export default eventsRouter

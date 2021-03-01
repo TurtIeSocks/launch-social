@@ -5,33 +5,66 @@ import ReactPlayer from 'react-player'
 import { Delete, Edit } from '@material-ui/icons/'
 import Show from './Show.js'
 import useStyles from './styling.js'
+import Fetch from "../../services/fetch/Fetch.js"
 
 const EventShow = props => {
   const classes = useStyles()
-  const [event, setEvent] = useState({})
-  const [game, setGame] = useState({})
   const [carouselImages, setCarouselImages] = useState([])
   const [carouselVideos, setCarouselVideos] = useState([])
+  const [thisEvent, setThisEvent] = useState({
+    id: "",
+    userId: "",
+    name: "",
+    description: "",
+    location: "",
+    meetUrl: "",
+    startDate: "",
+    endDate: "",
+    user: {
+      id: "",
+      username: "",
+      profileUrl: "",
+      avatarUrl: ""
+    },
+    eventType: {
+      id: "",
+      name: ""
+    },
+    studyTopic: {
+      id: "",
+      name: "",
+      imageUrl: ""
+    },
+    gameDetails: {
+      apiId: 0,
+      name: "",
+      summary: "",
+      maxPlayers: "",
+      coverArt: "",
+      url: "",
+      images: [],
+      videos: [],
+      platforms: [],
+      genres: []
+    },
+    userInterests: [],
+    comments: []
+  })
+  const [commentState, setCommentState] = useState({
+    id: '',
+    edit: false
+  })
 
   const { id: eventId } = props.match.params
 
   const fetchEvent = async () => {
-    try {
-      const response = await fetch(`/api/v1/events/${eventId}`)
-      if (!response.ok) {
-        throw new Error(`${response.status} (${response.statusText})`)
-      }
-      const body = await response.json()
-      setEvent(body.event)
-      setGame(body.event.gameDetails)
-    } catch (error) {
-      console.error(error.message)
-    }
+    const body = await Fetch.fetchEvent(eventId)
+    setThisEvent(body.event)
   }
 
   useEffect(() => {
     fetchEvent()
-  }, [])
+  }, [commentState])
 
   const getDate = (startDate, endDate) => {
     const startDateRaw = new Date(parseInt(startDate))
@@ -87,8 +120,8 @@ const EventShow = props => {
     return content
   }
 
-  const getEventCreator = event => {
-    const { id, username, profileUrl, avatarUrl } = event.user
+  const getEventCreator = thisEvent => {
+    const { username, profileUrl, avatarUrl } = thisEvent.user
     return (
       <a href={profileUrl} target='_blank'>
         <img src={avatarUrl} className={classes.avatar} />
@@ -99,15 +132,15 @@ const EventShow = props => {
     )
   }
 
-  const getGameSummary = event => {
-    if (event && event.gameDetails) {
-      let summary = event.gameDetails.summary
+  const getGameSummary = thisEvent => {
+    if (thisEvent.gameDetails) {
+      let summary = thisEvent.gameDetails.summary
       if (summary.length > 500) {
         summary = summary.substring(0, 500)
         return (
           <>
             {summary}...
-            <a href={event.gameDetails.url}>Read More</a>
+            <a href={thisEvent.gameDetails.url}>Read More</a>
           </>
         )
       } else {
@@ -116,9 +149,9 @@ const EventShow = props => {
     }
   }
 
-  const getGenres = event => {
-    if (event && event.gameDetails) {
-      return event.gameDetails.genres.map(genre => {
+  const getGenres = genres => {
+    if (thisEvent.gameDetails) {
+      return genres.map(genre => {
         return (
           <Grid
             item
@@ -161,50 +194,48 @@ const EventShow = props => {
   }
 
   const getCoverArt = () => {
-    if (event.gameDetails) {
-      return `https://images.igdb.com/igdb/image/upload/t_cover_big/${event.gameDetails.coverArt}.jpg`
-    } else if (event.studyTopic) {
-      return event.studyTopic.imageUrl
+    if (thisEvent.gameDetails) {
+      return `https://images.igdb.com/igdb/image/upload/t_cover_big/${thisEvent.gameDetails.coverArt}.jpg`
+    } else if (thisEvent.studyTopic) {
+      return thisEvent.studyTopic.imageUrl
     }
   }
 
   const getUrl = () => {
-    if (event.gameDetails) {
-      return event.gameDetails.url
-    } else if (event.studyTopic) {
-      return `https://en.wikipedia.org/wiki/${event.studyTopic.name}`
+    if (thisEvent.gameDetails) {
+      return thisEvent.gameDetails.url
+    } else if (thisEvent.studyTopic) {
+      return `https://en.wikipedia.org/wiki/${thisEvent.studyTopic.name}`
     }
   }
 
   const generateCarouselImages = images => {
-    if (images)
-      return images.map(image => {
-        const imageUrl = `https://images.igdb.com/igdb/image/upload/t_original/${image.imageId}.jpg`
-        return (
-          <div
-            key={image.imageId}
-            style={{ backgroundImage: `url(${imageUrl})` }}
-            className={classes.carouselImage}>
-          </div>
-        )
-      })
+    return images.map(image => {
+      const imageUrl = `https://images.igdb.com/igdb/image/upload/t_original/${image.imageId}.jpg`
+      return (
+        <div
+          key={image.imageId}
+          style={{ backgroundImage: `url(${imageUrl})` }}
+          className={classes.carouselImage}>
+        </div>
+      )
+    })
   }
 
   const generateCarouselVideos = videos => {
-    if (videos)
-      return videos.map(video => {
-        return (
-          <div
-            key={video.videoId}>
-            <ReactPlayer
-              url={`https://www.youtube.com/watch?v=${video.videoId}`}
-              width={432}
-              height={243}
-              playsinline
-              className={classes.carouselVideo} />
-          </div>
-        )
-      })
+    return videos.map(video => {
+      return (
+        <div
+          key={video.videoId}>
+          <ReactPlayer
+            url={`https://www.youtube.com/watch?v=${video.videoId}`}
+            width={432}
+            height={243}
+            playsinline
+            className={classes.carouselVideo} />
+        </div>
+      )
+    })
   }
 
   const getMeetUrl = url => {
@@ -222,28 +253,28 @@ const EventShow = props => {
   }
 
   let editButton, deleteButton = ''
-  if (props.user && props.user.id === event.userId) {
+  if (props.user && props.user.id === thisEvent.userId) {
     editButton =
-      <Link to={`/events/${event.id}/edit`} >
+      <Link to={`/events/${thisEvent.id}/edit`} >
         <Edit fontSize='large' color='secondary' />
       </Link>
     deleteButton =
-      <Link to={`/events/${event.id}/delete`}>
+      <Link to={`/events/${thisEvent.id}/delete`}>
         <Delete fontSize='large' color='primary' />
       </Link>
   }
 
   useEffect(() => {
-    if (game) {
-      setCarouselImages(generateCarouselImages(game.images))
-      setCarouselVideos(generateCarouselVideos(game.videos))
+    if (thisEvent.gameDetails) {
+      setCarouselImages(generateCarouselImages(thisEvent.gameDetails.images))
+      setCarouselVideos(generateCarouselVideos(thisEvent.gameDetails.videos))  
     }
-  }, [game])
+  }, [thisEvent.gameDetails])
 
   return (
     <Show
-      event={event}
-      game={game}
+      thisEvent={thisEvent}
+      setThisEvent={setThisEvent}
       getCoverArt={getCoverArt}
       getUrl={getUrl}
       carouselImages={carouselImages}
@@ -257,6 +288,9 @@ const EventShow = props => {
       editButton={editButton}
       deleteButton={deleteButton}
       getGenres={getGenres}
+      user={props.user}
+      commentState={commentState}
+      setCommentState={setCommentState}
     />
   )
 }

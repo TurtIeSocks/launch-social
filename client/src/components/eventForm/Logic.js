@@ -73,7 +73,6 @@ const FormLogic = ({
     })
   }
 
-
   const fieldReset = () => {
     setEventRecord({
       name: "",

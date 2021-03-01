@@ -127,7 +127,6 @@ const HomePage = ({
           <Grid item xs={10}>
             <Carousel
               interval={10000}
-              swipe
               next={() => { }}
               prev={() => { }}>
               {carouselImages}

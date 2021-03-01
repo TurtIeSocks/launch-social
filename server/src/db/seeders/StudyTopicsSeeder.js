@@ -24,7 +24,7 @@ class StudyTopicSeeder {
       { name: 'TypeScript', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png' },
       { name: 'SQL', imageUrl: 'https://i.pinimg.com/originals/d4/af/4c/d4af4c3163d48f3ed98a95302a49ca4d.png' },
       { name: 'PostgreSQL', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png' },
-      { name: 'Perl', imageUrl: 'https://upload.wikimedia.org/wikipedia/en/0/00/Perl-camel-small.png' },
+      { name: 'Perl', imageUrl: 'https://banner2.cleanpng.com/20180713/khp/kisspng-perl-6-programming-language-programmer-perl-5b483cf70aedd4.4432914215314608550448.jpg' },
       { name: 'Dart', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Dart-logo.png' },
       { name: 'Jest', imageUrl: 'https://seeklogo.com/images/J/jest-logo-F9901EBBF7-seeklogo.com.png' },
       { name: 'Cypress', imageUrl: 'https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_7fcb618f84ed24432b01b5f848cab75f/cypress.png' },

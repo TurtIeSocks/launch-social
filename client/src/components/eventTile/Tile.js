@@ -38,21 +38,21 @@ const Tile = ({ event, interested, attending, getThumbnail, convertDate, isActiv
           <Grid item xs={12} sm={4}>
             <Typography variant='h2' className={classes.date}>{convertDate(event.startDate)}</Typography>
           </Grid>
-          <Grid item xs={12} sm={7} md={8}>
+          <Grid item xs={12} sm={7}>
             <Typography variant='body1' className={classes.body}>{event.description}</Typography>
           </Grid>
-          <Grid item xs={3} sm={3} md={3}>
+          <Grid item xs={4} sm={3}>
             <Typography variant='h2' className={classes.username} display='inline'>
               <img src={`${event.user.avatarUrl}`} className={classes.avatar} />
-              {event.user.username}
+              &nbsp;{event.user.username}
             </Typography>
           </Grid>
-          <Grid item xs={3} sm={2} md={1}>
+          <Grid item xs={4} sm={2}>
             <Typography variant='body1' display='inline' className={classes.body}>
               <Comment
                 color='primary'
                 style={{ fontSize: 15 }}
-                />
+              />
               &nbsp;{event.totalComments.value}
             </Typography>
           </Grid>

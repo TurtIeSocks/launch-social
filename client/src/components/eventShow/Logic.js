@@ -194,7 +194,7 @@ const EventShow = props => {
   }
 
   const getCoverArt = () => {
-    if (thisEvent.gameDetails) {
+    if (thisEvent.gameDetails && thisEvent.gameDetails.coverArt) {
       return `https://images.igdb.com/igdb/image/upload/t_cover_big/${thisEvent.gameDetails.coverArt}.jpg`
     } else if (thisEvent.studyTopic) {
       return thisEvent.studyTopic.imageUrl

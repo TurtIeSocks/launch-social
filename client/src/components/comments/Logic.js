@@ -63,6 +63,7 @@ const CommentLogic = ({ thisEvent, setThisEvent, commentState, setCommentState, 
       {allComments}
       <Grid item xs={10} sm={12}>
         <NewComment
+          user={user}
           thisEvent={thisEvent}
           setThisEvent={setThisEvent}
         />

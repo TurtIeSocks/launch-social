@@ -83,7 +83,7 @@ const TileLogic = ({ event: eventDetails, user }) => {
     } else if (userInterests.isInterested) {
       removeInterest()
     } else {
-      newInterest({ value: 'attending' })
+      newInterest({ value: 'interested' })
     }
   }
 

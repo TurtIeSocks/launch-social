@@ -44,7 +44,7 @@ class EventSeeder {
     }
 
     for (let i = 1; i < parseInt(userCount.value); i++) {
-      const numEvents = rng(1, 100)
+      const numEvents = rng(1, 75)
 
       for (let j = 0; j < numEvents; j++) {
         const dates = timeGenerator()

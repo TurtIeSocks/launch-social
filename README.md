@@ -12,6 +12,7 @@ React based platform for coordinating and creating gaming activities or study se
 - RNG based seeder that can automatically generate more events for demo purposes
 - Users can indicate whether they are interested or plan to attend each event
 - Sign in with GitHub for ease of use
+- Users can add, edit and delete their comments, as well as view their friends' comments
 
 ## Technologies Used
 - Internet Games Database API Integration
@@ -48,7 +49,6 @@ React based platform for coordinating and creating gaming activities or study se
 https://launch-social.herokuapp.com/
 
 ## Coming Soon
-- Ability for users to add comments to events
 - Better structured homepage
 - Visual calendar to view which days have active events
 - Homepage event filters
